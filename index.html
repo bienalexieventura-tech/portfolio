@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BIEN ALEXIE V. VENTURA — CREATIVE DEVELOPER & UI/UX DESIGNER</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0E0E10; color: #F4F1EA; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; margin: 0; }
+    .font-display { font-family: 'Syne', sans-serif; }
+    .font-serif-editorial { font-family: 'Instrument Serif', serif; }
+    @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+    .animate-marquee { display: flex; width: max-content; animation: marquee 22s linear infinite; }
+    .animate-marquee:hover { animation-play-state: paused; }
+    .bg-grid-pattern {
+      background-size: 48px 48px;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+    .clip-octagon {
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    }
+    .hero-card-3d {
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+      .hero-card-3d {
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .hero-text-fade {
+      background: linear-gradient(180deg, #FFFFFF 0%, rgba(244, 241, 234, 0.92) 52%, rgba(244, 241, 234, 0.08) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-[#0E0E10] text-[#F4F1EA] bg-grid-pattern selection:bg-[#D2FF28] selection:text-[#0E0E10]">
+  <div id="intro-curtain-root"></div>
+  <div id="portfolio-root"></div>
+  <div id="modal-root"></div>
+
+  <script>
+    const SITE = {"profile":{"fullName":"BIEN ALEXIE V. VENTURA","heroName":"BIEN","roleBadge":"CREATIVE DEVELOPER & UI/UX DESIGNER","tagline":"Crafting kinetic digital experiences, bold brand systems & interactive web architecture that leave a lasting impression.","location":"BASED IN BAGUIO, PHILIPPINES — WORKING GLOBALLY","email":"hello@bien.studio","availability":"AVAILABLE FOR Q2/Q3 FREELANCE","portraitUrl":"data:image/webp;base64,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","portraitScale":1.05,"portraitOffsetY":0,"portraitFilter":"natural","portraitShape":"brutalist","accentColor":"#D2FF28","secondaryAccent":"#FF4D1C"},"projects":[{"id":1,"title":"KINETIX OS — SPATIAL DESIGN SYSTEM","category":"UI/UX & WebGL","year":"2025","client":"Kinetix Labs Inc.","metrics":"+184% Conversion Lift","image":"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85","summary":"A next-generation spatial interface and motion language built for an AI-driven hardware startup, blending real-time 3D shaders with brutalist editorial typography.","deliverables":["Design System","WebGL Shaders","React Architecture","Brand Motion"]},{"id":2,"title":"AETHERIA — LUXURY FASHION ARCHIVE","category":"Creative Direction","year":"2024","client":"Maison Aetheria Paris","metrics":"Awwwards Site of the Day","image":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=85","summary":"Interactive lookbook and digital flagship store featuring fluid scroll-jacked transitions, custom variable typography, and instant checkout micro-interactions.","deliverables":["Art Direction","Headless Commerce","Custom Typeface","GSAP Motion"]},{"id":3,"title":"PULSEZERO — FINTECH DEFI TERMINAL","category":"Product Design","year":"2024","client":"PulseZero Zürich","metrics":"$420M+ Volume Processed","image":"https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=85","summary":"High-frequency algorithmic trading cockpit engineered for zero-latency visual feedback, high-contrast dark mode ergonomics, and modular widget layouts.","deliverables":["Product Strategy","UI Engineering","Data Visualization","Design Tokens"]},{"id":4,"title":"MONOLITH — ARCHITECTURAL BIENNALE","category":"Brand & Digital","year":"2024","client":"Nordic Pavilion","metrics":"1.2M+ Interactive Sessions","image":"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85","summary":"Brutalist kinetic identity and immersive exhibition guide that responds to visitor audio and cursor velocity in real time.","deliverables":["Kinetic Identity","Interactive Web","Sound Design","Wayfinding"]}],"services":[{"id":"01","title":"KINETIC WEB & FRONTEND ARCHITECTURE","description":"Bespoke React, Next.js, and WebGL experiences engineered for 60fps fluidity, buttery smooth page transitions, and production-grade HTTPS scalability.","tags":["React / Next.js","Tailwind CSS","WebGL / Three.js","60FPS Motion"],"previewImg":"https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"},{"id":"02","title":"DIGITAL ART DIRECTION & BRAND SYSTEMS","description":"High-impact visual identities that merge Swiss typographic precision with neo-brutalist color stories, custom iconography, and motion guidelines.","tags":["Visual Identity","Typography Systems","Design Tokens","Brand Books"],"previewImg":"https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80"},{"id":"03","title":"INTERACTIVE PRODUCT & UI/UX DESIGN","description":"Conversion-obsessed product interfaces, interactive prototypes, and comprehensive Figma component libraries built for ambitious startups.","tags":["Figma Systems","Interactive Prototyping","User Flows","Design Ops"],"previewImg":"https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80"},{"id":"04","title":"MOTION DESIGN & MICRO-INTERACTIONS","description":"Signature hover physics, magnetic buttons, scroll-triggered storytelling, and custom SVG animations that make digital products feel alive.","tags":["Micro-Interactions","SVG Physics","Scroll Storytelling","3D Parallax"],"previewImg":"https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80"}],"experience":[{"role":"Principal Creative Developer","company":"Studio Matthew / Independent","period":"2022 — PRESENT","highlight":"Leading digital flagships for Fortune 500 & YC startups"},{"role":"Senior Interactive Art Director","company":"Plainthing / Kinetic Collective","period":"2020 — 2022","highlight":"3x Awwwards SOTD & FWA of the Day Winner"},{"role":"Lead UI/UX Designer","company":"Hyperion Digital London","period":"2018 — 2020","highlight":"Architected design systems for 14+ global products"}],"metrics":[{"num":"48+","label":"Global Awards & FWA / Awwwards Nods"},{"num":"120+","label":"Shipped Digital Products & Brands"},{"num":"99.8%","label":"Client Retention & Satisfaction"},{"num":"$250M+","label":"Client Valuation Growth Enabled"}],"testimonials":[{"quote":"He transformed our entire brand perception in 6 weeks. The kinetic animations and attention to typographic detail doubled our enterprise inbound leads.","author":"ELENA ROSTOVA","role":"VP of Design at Kinetix Labs"},{"quote":"Rarely do you find someone who operates at the pinnacle of both art direction and production frontend code. Every micro-interaction feels intentional.","author":"MARCUS VANCE","role":"Founder at PulseZero Zürich"}],"aboutHeadline":"I bridge the gap between radical visual concepts and bulletproof frontend engineering.","expBadge":"8+ YRS EXP","_savedAt":1793684844320};
+    const p = SITE.profile;
+    let activeServiceIdx = 0;
+    let currentCategory = 'ALL';
+
+    function getShapeStyle(shape) {
+      if (shape === 'arch') return 'border-radius: 999px 999px 28px 28px;';
+      if (shape === 'pill') return 'border-radius: 999px;';
+      if (shape === 'brutalist') return 'border-radius: 0px;';
+      return 'border-radius: 32px;';
+    }
+
+    function getFilterStyle(filter) {
+      if (filter === 'editorial-bw') return 'filter: grayscale(100%) contrast(1.18) brightness(0.96);';
+      if (filter === 'high-contrast') return 'filter: contrast(1.28) saturate(1.15);';
+      if (filter === 'lime-duotone') return 'filter: grayscale(100%) sepia(80%) hue-rotate(38deg) saturate(350%) contrast(1.15);';
+      return 'filter: none;';
+    }
+
+    function getHeroFontSize(name) {
+      const len = (name || '').length;
+      if (len > 14) return 'clamp(2.6rem, 7.8vw, 7.2rem)';
+      if (len > 8) return 'clamp(3.2rem, 10.5vw, 10rem)';
+      return 'clamp(4.4rem, 15vw, 14rem)';
+    }
+
+    let introRaf = null;
+
+    function playIntroCurtain() {
+      const root = document.getElementById('intro-curtain-root');
+      if (!root) return;
+      if (introRaf) cancelAnimationFrame(introRaf);
+
+      root.innerHTML = `
+        <div id="embed-intro-curtain" style="transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.75s ease;" class="fixed inset-0 z-[100] bg-[#0E0E10] bg-grid-pattern flex flex-col justify-between p-6 sm:p-12 overflow-hidden border-b-4 border-[#D2FF28] select-none">
+          <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full blur-[150px] opacity-30" style="background:${p.accentColor}"></div>
+          <div class="relative z-10 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-[#FF2A2A] text-white clip-octagon flex items-center justify-center font-extrabold text-xs shadow-lg shrink-0">✦</div>
+              <span class="font-display font-extrabold text-xs sm:text-sm md:text-base tracking-wider uppercase text-[#F4F1EA]">${p.fullName || 'BIEN ALEXIE V. VENTURA'}</span>
+            </div>
+            <button onclick="window.skipEmbedIntro()" class="px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-[11px] font-bold uppercase tracking-widest text-zinc-300 cursor-pointer transition-colors shrink-0">
+              Skip Intro ↗
+            </button>
+          </div>
+          <div class="relative z-10 my-auto flex flex-col items-center justify-center text-center py-6 w-full">
+            <div class="relative w-28 h-36 sm:w-36 sm:h-44 mb-6 overflow-hidden border-2 border-[#D2FF28] shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-[#16161A]">
+              <img src="${p.portraitUrl}" alt="${p.heroName}" style="${getFilterStyle(p.portraitFilter)}" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10]/80 via-transparent to-transparent"></div>
+              <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[9px] font-extrabold uppercase tracking-widest text-[#D2FF28]">
+                <span>FOLIO</span>
+                <span>2026</span>
+              </div>
+            </div>
+            <p class="text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#D2FF28] mb-3 font-bold">
+              // INITIALIZING INTERACTIVE EXPERIENCE
+            </p>
+            <div class="w-full flex justify-center items-center px-4">
+              <h1 id="embed-intro-fade-text" class="font-display font-extrabold text-5xl sm:text-7xl md:text-8xl uppercase tracking-tighter leading-none text-center hero-text-fade">
+                ${p.heroName}
+              </h1>
+            </div>
+            <p class="mt-4 text-xs sm:text-sm uppercase tracking-[0.22em] text-zinc-400 font-semibold">
+              ${p.roleBadge}
+            </p>
+          </div>
+          <div class="relative z-10 w-full max-w-4xl mx-auto">
+            <div class="flex items-end justify-between mb-3">
+              <span class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">LOADING ASSETS & KINETIC SHADERS</span>
+              <span id="embed-intro-num" class="font-display font-extrabold text-4xl sm:text-6xl text-[#D2FF28] leading-none">0%</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden p-0.5">
+              <div id="embed-intro-bar" class="h-full bg-[#D2FF28] rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const duration = 2600;
+      const startTime = performance.now();
+
+      function tick(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const val = Math.round(eased * 100);
+
+        const numEl = document.getElementById('embed-intro-num');
+        const barEl = document.getElementById('embed-intro-bar');
+        const fadeEl = document.getElementById('embed-intro-fade-text');
+        if (numEl) numEl.textContent = val + '%';
+        if (barEl) barEl.style.width = val + '%';
+        if (fadeEl) {
+          fadeEl.style.opacity = String(0.2 + (val / 100) * 0.8);
+          fadeEl.style.transform = `translateY(${(1 - val / 100) * 12}px)`;
+        }
+
+        if (t < 1) {
+          introRaf = requestAnimationFrame(tick);
+        } else {
+          setTimeout(() => {
+            window.skipEmbedIntro();
+          }, 420);
+        }
+      }
+
+      introRaf = requestAnimationFrame(tick);
+    }
+
+    window.skipEmbedIntro = function() {
+      if (introRaf) cancelAnimationFrame(introRaf);
+      const curtain = document.getElementById('embed-intro-curtain');
+      if (curtain) {
+        curtain.style.transform = 'translateY(-100%)';
+        curtain.style.opacity = '0';
+      }
+      setTimeout(() => {
+        const root = document.getElementById('intro-curtain-root');
+        if (root) root.innerHTML = '';
+      }, 820);
+    };
+
+    function bindHeroParallax() {
+      const heroSection = document.getElementById('top');
+      const card3d = document.getElementById('hero-card-3d');
+      if (!heroSection || !card3d) return;
+
+      heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
+        const y = -((e.clientY - rect.top) / rect.height - 0.5) * 14;
+        card3d.style.transform = `perspective(1100px) rotateX(${y}deg) rotateY(${x}deg)`;
+      });
+
+      heroSection.addEventListener('mouseleave', () => {
+        card3d.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg)';
+      });
+    }
+
+    function renderApp() {
+      const categories = ['ALL', ...new Set(SITE.projects.map(x => x.category))];
+      const filteredProjects = currentCategory === 'ALL' ? SITE.projects : SITE.projects.filter(x => x.category === currentCategory);
+      const heroSize = getHeroFontSize(p.heroName);
+
+      document.getElementById('portfolio-root').innerHTML = `
+        <!-- Top Nav -->
+        <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0E0E10]/90 border-b border-white/10">
+          <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+              <a href="#top" class="font-display font-extrabold text-sm sm:text-base md:text-lg tracking-wider uppercase text-[#F4F1EA] flex items-center gap-2 group whitespace-nowrap">
+                <span class="group-hover:text-[#D2FF28] transition-colors">${p.fullName || 'BIEN ALEXIE V. VENTURA'}</span>
+                <span style="background:${p.accentColor}" class="w-2.5 h-2.5 rounded-full inline-block shrink-0 group-hover:scale-125 transition-transform"></span>
+              </a>
+            </div>
+            <nav class="hidden xl:flex items-center gap-1 p-1.5 rounded-full bg-[#16161A] border border-white/10">
+              <a href="#services" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Services</a>
+              <a href="#work" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Selected Works</a>
+              <a href="#about" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">About & Metrics</a>
+              <a href="#reviews" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Reviews</a>
+              <a href="#contact" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Contact</a>
+            </nav>
+            <div class="flex items-center gap-2.5 shrink-0">
+              <button onclick="playIntroCurtain()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 transition-colors cursor-pointer">
+                <span class="text-[#D2FF28]"></span> Replay Intro
+              </button>
+              <a href="#contact" style="background:${p.accentColor}" class="px-5 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
+                Let's Talk ↗
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="top" class="relative pt-8 pb-20 sm:pt-14 sm:pb-28 px-4 sm:px-8 max-w-7xl mx-auto">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#16161A] border border-white/10">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#D2FF28] animate-ping"></span>
+              <span class="text-xs font-bold uppercase tracking-widest text-zinc-200">${p.availability}</span>
+            </div>
+            <div class="text-xs font-bold uppercase tracking-widest text-zinc-400">${p.location}</div>
+            <div class="px-4 py-1.5 rounded-full border border-white/15 bg-[#16161A] text-xs font-bold uppercase tracking-widest text-[#D2FF28]">${p.roleBadge}</div>
+          </div>
+
+          <div class="relative flex flex-col items-center justify-center my-4 sm:my-10">
+            <!-- LAYER 1 (BEHIND PORTRAIT): SOLID FILLED WHITE TEXT -->
+            <h1 style="font-size: ${heroSize}; line-height: 0.88; letter-spacing: -0.03em;" class="font-display font-extrabold uppercase text-center select-none pointer-events-none z-10 w-full break-words px-4 goal-knockout-solid">
+          <div class="relative flex flex-col items-center justify-center my-4 sm:my-10 w-full">
+            <!-- CENTERED HERO NAME WITH VERTICAL FADE EFFECT BEHIND PORTRAIT -->
+            <div class="w-full flex justify-center items-center z-10 pointer-events-none select-none">
+              <h1 style="font-size: ${heroSize}; line-height: 0.88; letter-spacing: -0.04em;" class="font-display font-extrabold uppercase text-center w-full break-words px-4 hero-text-fade">
+                ${p.heroName}
+              </h1>
+            </div>
+
+            <!-- 3D PARALLAX PORTRAIT -->
+            <div class="relative z-20 -mt-8 sm:-mt-16 md:-mt-24 flex flex-col items-center">
+              <div id="hero-card-3d" class="hero-card-3d relative w-[275px] h-[355px] sm:w-[350px] sm:h-[450px] p-2 bg-gradient-to-b from-white/25 via-white/5 to-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.85)] border border-white/20" style="${getShapeStyle(p.portraitShape)}">
+                <div class="w-full h-full overflow-hidden bg-[#16161A] relative" style="${getShapeStyle(p.portraitShape)}">
+                  <img src="${p.portraitUrl}" alt="${p.heroName}" style="transform: scale(${p.portraitScale}) translateY(${p.portraitOffsetY}px); ${getFilterStyle(p.portraitFilter)}" class="w-full h-full object-cover object-center transition-all duration-300" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10]/65 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pt-8 border-t border-white/10">
+            <div class="lg:col-span-7">
+              <div class="flex flex-wrap items-center gap-3 mb-3">
+                <p class="text-xs font-bold uppercase tracking-widest text-[#D2FF28]">// 01 — INTRODUCTION</p>
+                <span style="background:${p.accentColor}" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[#0E0E10] font-extrabold text-[11px] uppercase tracking-wider shadow-md">
+                  ★ ${SITE.expBadge || '8+ YRS EXP'}
+                </span>
+              </div>
+              <p class="text-xl sm:text-2xl md:text-3xl font-medium text-zinc-100 leading-snug">${p.tagline}</p>
+            </div>
+            <div class="lg:col-span-5 flex flex-wrap lg:justify-end gap-3">
+              <a href="#work" style="background:${p.accentColor}" class="px-6 py-4 rounded-full font-extrabold text-xs uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-lg">Explore Works ↗</a>
+              <a href="#contact" class="px-6 py-4 rounded-full font-extrabold text-xs uppercase tracking-wider bg-[#16161A] text-white border border-white/15 hover:border-[#D2FF28] transition-colors">Contact Studio</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Straight Marquee Strip -->
+        <div style="background:${p.accentColor}" class="py-4 border-y-2 border-[#0E0E10] text-[#0E0E10] overflow-hidden shadow-2xl my-6">
+          <div class="animate-marquee flex items-center">
+            ${Array(8).fill(`<span class="font-display font-extrabold text-sm sm:text-base uppercase tracking-wider mx-6 flex items-center gap-3">✦ AVAILABLE FOR SELECT FREELANCE ✦ KINETIC WEB ARCHITECTURE ✦ ART DIRECTION ✦ BRAND SYSTEMS</span>`).join('')}
+          </div>
+        </div>
+
+        <!-- Services Accordion -->
+        <section id="services" class="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
+          <div class="mb-12">
+            <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-2">// 02 — CAPABILITIES</span>
+            <h2 class="font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tight">WHAT I <span class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">architect</span></h2>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-7 divide-y divide-white/10 border-y border-white/10">
+              ${SITE.services.map((s, idx) => `
+                <div onclick="selectService(${idx})" class="py-7 px-4 cursor-pointer transition-all ${activeServiceIdx === idx ? 'bg-white/[0.04]' : 'hover:bg-white/[0.02]'}">
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                      <span class="font-display font-extrabold text-sm px-3 py-1 rounded-full border ${activeServiceIdx === idx ? 'bg-[#D2FF28] text-[#0E0E10] border-[#D2FF28]' : 'text-zinc-400 border-white/15'}">${s.id}</span>
+                      <h3 class="font-display font-extrabold text-xl sm:text-2xl uppercase">${s.title}</h3>
+                    </div>
+                    <span class="w-10 h-10 rounded-full flex items-center justify-center border ${activeServiceIdx === idx ? 'bg-[#D2FF28] text-[#0E0E10] border-[#D2FF28] rotate-45' : 'border-white/15 text-zinc-400'} transition-transform">↗</span>
+                  </div>
+                  ${activeServiceIdx === idx ? `
+                    <div class="mt-4 pl-0 sm:pl-14">
+                      <p class="text-zinc-300 text-sm sm:text-base leading-relaxed mb-4">${s.description}</p>
+                      <div class="flex flex-wrap gap-2">
+                        ${s.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#16161A] border border-white/10 text-zinc-300">${t}</span>`).join('')}
+                      </div>
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+            <div class="lg:col-span-5">
+              <div class="rounded-3xl overflow-hidden border border-white/15 bg-[#16161A] p-3">
+                <div class="relative aspect-[4/3] rounded-2xl overflow-hidden">
+                  <img src="${SITE.services[activeServiceIdx].previewImg}" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-transparent to-transparent"></div>
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <span class="px-2.5 py-1 rounded-md bg-[#D2FF28] text-[#0E0E10] font-extrabold text-[10px] uppercase">${SITE.services[activeServiceIdx].id} // PREVIEW</span>
+                    <p class="font-display font-extrabold text-lg uppercase text-white mt-1">${SITE.services[activeServiceIdx].title}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Selected Works -->
+        <section id="work" class="py-24 px-4 sm:px-8 max-w-7xl mx-auto border-t border-white/10">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-2">// 03 — CASE STUDIES</span>
+              <h2 class="font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tight">SELECTED <span class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">works</span></h2>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              ${categories.map(c => `
+                <button onclick="filterCategory('${c}')" class="px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider cursor-pointer transition-all ${currentCategory === c ? 'bg-[#D2FF28] text-[#0E0E10]' : 'bg-[#16161A] text-zinc-400 border border-white/10 hover:text-white'}">${c}</button>
+              `).join('')}
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            ${filteredProjects.map((proj, idx) => `
+              <article onclick="openProject(${proj.id})" class="group rounded-3xl bg-[#16161A] border border-white/10 overflow-hidden hover:border-[#D2FF28]/60 transition-all cursor-pointer flex flex-col justify-between">
+                <div>
+                  <div class="relative aspect-[16/11] overflow-hidden bg-zinc-900">
+                    <img src="${proj.image}" alt="${proj.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-transparent to-transparent opacity-70"></div>
+                    <div class="absolute top-4 left-4 right-4 flex justify-between">
+                      <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase bg-[#0E0E10]/80 text-white border border-white/15">0${idx + 1} / ${proj.category}</span>
+                      <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase bg-[#D2FF28] text-[#0E0E10]">${proj.metrics}</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
+                      <div style="background:${p.accentColor}" class="px-5 py-3 rounded-full text-[#0E0E10] font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-2xl transform translate-y-3 group-hover:translate-y-0 transition-transform">
+                        <span>Inspect Case Study</span>
+                        <span>↗</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="p-6 sm:p-8">
+                    <div class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">${proj.client} • ${proj.year}</div>
+                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl uppercase text-white group-hover:text-[#D2FF28] transition-colors mb-3">${proj.title}</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">${proj.summary}</p>
+                  </div>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- About & Metrics Section -->
+        <section id="about" class="bg-[#F4F1EA] text-[#0E0E10] py-24 px-4 sm:px-8 rounded-t-[40px] sm:rounded-t-[64px]">
+          <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-black/15">
+              <div class="lg:col-span-5">
+                <span class="px-3.5 py-1.5 rounded-full bg-[#0E0E10] text-[#D2FF28] text-xs font-extrabold uppercase tracking-widest">// 04 — ABOUT & METRICS</span>
+                <h2 class="font-display font-extrabold text-4xl sm:text-5xl uppercase tracking-tight mt-4 leading-none">BUILT WHERE <span class="font-serif-editorial italic font-normal underline decoration-[#FF4D1C]">design</span> MEETS CODE.</h2>
+              </div>
+              <div class="lg:col-span-7">
+                <p class="text-xl sm:text-2xl font-semibold leading-snug mb-8">${SITE.aboutHeadline}</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  ${SITE.metrics.map(m => `
+                    <div class="p-5 rounded-2xl bg-white border border-black/10 shadow-sm">
+                      <div class="font-display font-extrabold text-3xl text-[#0E0E10]">${m.num}</div>
+                      <div class="text-xs font-bold uppercase tracking-wider text-zinc-500 mt-1">${m.label}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+            <div class="mt-16">
+              <h3 class="font-display font-extrabold text-2xl uppercase mb-8">EXPERIENCE TIMELINE</h3>
+              <div class="divide-y divide-black/15 border-y border-black/15">
+                ${SITE.experience.map(e => `
+                  <div class="py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <h4 class="font-display font-extrabold text-xl uppercase">${e.role}</h4>
+                      <p class="text-sm font-semibold text-zinc-600">${e.company}</p>
+                    </div>
+                    <p class="text-sm text-zinc-700 font-medium">${e.highlight}</p>
+                    <span class="px-4 py-1.5 rounded-full bg-[#0E0E10] text-[#F4F1EA] text-xs font-extrabold uppercase self-start md:self-center">${e.period}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reviews & Contact -->
+        <section id="reviews" class="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-2">// 05 — ENDORSEMENTS</span>
+          <h2 class="font-display font-extrabold text-4xl sm:text-5xl uppercase mb-12">CLIENT <span class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">voices</span></h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            ${SITE.testimonials.map(t => `
+              <div class="p-8 rounded-3xl bg-[#16161A] border border-white/10 flex flex-col justify-between">
+                <p class="text-lg sm:text-xl text-zinc-200 leading-relaxed mb-8">"${t.quote}"</p>
+                <div class="pt-4 border-t border-white/10">
+                  <div class="font-display font-extrabold text-sm uppercase text-white">${t.author}</div>
+                  <div class="text-xs text-zinc-400">${t.role}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <section id="contact" class="py-24 px-4 sm:px-8 border-t border-white/10 bg-[#0A0A0C]">
+          <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div class="lg:col-span-7">
+              <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-4">// 06 — INITIATE A PROJECT</span>
+              <h2 class="font-display font-extrabold text-5xl sm:text-7xl uppercase tracking-tighter leading-none mb-8">LET'S BUILD <span style="color:${p.accentColor}">NEXT-GEN</span> WORK.</h2>
+              <a href="mailto:${p.email}" style="background:${p.accentColor}" class="inline-flex items-center gap-3 px-8 py-5 rounded-2xl text-[#0E0E10] font-display font-extrabold text-lg uppercase tracking-wider shadow-xl hover:scale-105 transition-transform">
+                 ${p.email} ↗
+              </a>
+            </div>
+            <div class="lg:col-span-5 p-8 rounded-3xl bg-[#16161A] border border-white/10">
+              <h3 class="font-display font-extrabold text-2xl uppercase mb-6">QUICK INQUIRY</h3>
+              <form onsubmit="event.preventDefault(); this.innerHTML='<div class=\'p-6 rounded-2xl bg-[#D2FF28]/15 border border-[#D2FF28] text-center\'><p class=\'font-display font-extrabold text-xl text-[#D2FF28] uppercase mb-2\'>Inquiry Received ✓</p><p class=\'text-xs text-zinc-300\'>Thank you! We will respond within 24 hours.</p></div>';" class="space-y-4">
+                <input required placeholder="Your Name" class="w-full px-4 py-3 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none" />
+                <input required type="email" placeholder="Your Email" class="w-full px-4 py-3 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none" />
+                <textarea required rows="3" placeholder="Project details, timeline & goals..." class="w-full px-4 py-3 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none"></textarea>
+                <button type="submit" style="background:${p.accentColor}" class="w-full py-4 rounded-xl text-[#0E0E10] font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer hover:brightness-110 transition-all">Send Project Brief ↗</button>
+              </form>
+            </div>
+          </div>
+          <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 text-center text-xs text-zinc-500 uppercase tracking-widest">
+            © 2026 ${p.fullName || 'BIEN ALEXIE V. VENTURA'} — ALL RIGHTS RESERVED.
+          </div>
+        </section>
+      `;
+
+      bindHeroParallax();
+    }
+
+    window.selectService = function(idx) { activeServiceIdx = idx; renderApp(); };
+    window.filterCategory = function(cat) { currentCategory = cat; renderApp(); };
+    window.openProject = function(id) {
+      const proj = SITE.projects.find(x => x.id === id);
+      if (!proj) return;
+      document.getElementById('modal-root').innerHTML = `
+        <div onclick="closeModal()" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div onclick="event.stopPropagation()" class="w-full max-w-3xl rounded-3xl bg-[#16161A] border border-white/15 overflow-hidden shadow-2xl">
+            <div class="relative aspect-[16/9] bg-black">
+              <img src="${proj.image}" class="w-full h-full object-cover" />
+              <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/80 text-white font-bold cursor-pointer">✕</button>
+            </div>
+            <div class="p-6 sm:p-8">
+              <span class="text-xs font-extrabold uppercase text-[#D2FF28]">${proj.category} • ${proj.year} • ${proj.metrics}</span>
+              <h3 class="font-display font-extrabold text-2xl sm:text-4xl uppercase text-white mt-2 mb-4">${proj.title}</h3>
+              <p class="text-zinc-300 text-sm sm:text-base leading-relaxed mb-6">${proj.summary}</p>
+              <div class="flex flex-wrap gap-2">
+                ${(proj.deliverables || []).map(d => `<span class="px-3 py-1 rounded-full text-xs bg-white/5 border border-white/10 text-zinc-200">${d}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+    window.closeModal = function() { document.getElementById('modal-root').innerHTML = ''; };
+
+    renderApp();
+    playIntroCurtain();
+  </script>
+</body>
+</html>
