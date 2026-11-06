@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,16 +7,40 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
-    body { background: #0E0E10; color: #F4F1EA; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; margin: 0; }
-    .font-display { font-family: 'Syne', sans-serif; }
-    .font-serif-editorial { font-family: 'Instrument Serif', serif; }
-    @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
-    .animate-marquee { display: flex; width: max-content; animation: marquee 22s linear infinite; }
-    .animate-marquee:hover { animation-play-state: paused; }
+    html, body {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: #0E0E10;
+      color: #F4F1EA;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    .font-display {
+      font-family: 'Syne', sans-serif;
+    }
+    .font-serif-editorial {
+      font-family: 'Instrument Serif', serif;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
     .bg-grid-pattern {
       background-size: 48px 48px;
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     }
     .clip-octagon {
       clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
@@ -25,10 +49,34 @@
       transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
       transform-style: preserve-3d;
       will-change: transform;
-      .hero-card-3d {
-      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-      transform-style: preserve-3d;
-      will-change: transform;
+    }
+    /* LAYER 1: Solid filled metallic/white fade layer that sits BEHIND the portrait */
+    .hero-knockout-solid {
+      background: linear-gradient(180deg, #FFFFFF 0%, #E2E0DC 65%, rgba(226, 224, 220, 0.25) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 18px 38px rgba(0, 0, 0, 0.75));
+    }
+    /* LAYER 3: Crisp hollow wireframe outline + subtle inner edge fade that sits IN FRONT of the portrait */
+    .hero-knockout-outline {
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(255, 255, 255, 0.92);
+      text-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+    }
+    /* Soft horizontal edge fade overlay for the text transition across the portrait edges */
+    .hero-knockout-edge-fade {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.04) 35%,
+        rgba(255, 255, 255, 0.04) 65%,
+        rgba(255, 255, 255, 0.25) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .hero-text-fade {
       background: linear-gradient(180deg, #FFFFFF 0%, rgba(244, 241, 234, 0.92) 52%, rgba(244, 241, 234, 0.08) 100%);
@@ -37,18 +85,265 @@
       background-clip: text;
       color: transparent;
     }
+    /* Page transition animation */
+    @keyframes pageEnter {
+      0% { opacity: 0; transform: translateY(14px) scale(0.992); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .page-view-enter {
+      animation: pageEnter 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    /* Inline editable highlight when Edit Mode is ON */
+    [contenteditable="true"] {
+      user-select: text;
+      outline: 1.5px dashed rgba(210, 255, 40, 0.65);
+      outline-offset: 3px;
+      border-radius: 4px;
+      cursor: text;
+      transition: outline-color 0.15s ease, background-color 0.15s ease;
+    }
+    [contenteditable="true"]:hover,
+    [contenteditable="true"]:focus {
+      outline: 2px solid #D2FF28;
+      background-color: rgba(210, 255, 40, 0.08);
+    }
+    /* Custom thin scrollbar only for the CMS Drawer */
+    .cms-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .cms-scroll::-webkit-scrollbar-track {
+      background: #0E0E10;
+    }
+    .cms-scroll::-webkit-scrollbar-thumb {
+      background: #27272A;
+      border-radius: 999px;
+    }
   </style>
 </head>
 <body class="bg-[#0E0E10] text-[#F4F1EA] bg-grid-pattern selection:bg-[#D2FF28] selection:text-[#0E0E10]">
   <div id="intro-curtain-root"></div>
-  <div id="portfolio-root"></div>
+  <div id="portfolio-root" class="h-screen w-screen overflow-hidden flex flex-col justify-between"></div>
+  <div id="cms-drawer-root"></div>
   <div id="modal-root"></div>
 
   <script>
-    const SITE = {"profile":{"fullName":"BIEN ALEXIE V. VENTURA","heroName":"BIEN","roleBadge":"CREATIVE DEVELOPER & UI/UX DESIGNER","tagline":"Crafting kinetic digital experiences, bold brand systems & interactive web architecture that leave a lasting impression.","location":"BASED IN BAGUIO, PHILIPPINES — WORKING GLOBALLY","email":"hello@bien.studio","availability":"AVAILABLE FOR Q2/Q3 FREELANCE","portraitUrl":"data:image/webp;base64,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","portraitScale":1.05,"portraitOffsetY":0,"portraitFilter":"natural","portraitShape":"brutalist","accentColor":"#D2FF28","secondaryAccent":"#FF4D1C"},"projects":[{"id":1,"title":"KINETIX OS — SPATIAL DESIGN SYSTEM","category":"UI/UX & WebGL","year":"2025","client":"Kinetix Labs Inc.","metrics":"+184% Conversion Lift","image":"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85","summary":"A next-generation spatial interface and motion language built for an AI-driven hardware startup, blending real-time 3D shaders with brutalist editorial typography.","deliverables":["Design System","WebGL Shaders","React Architecture","Brand Motion"]},{"id":2,"title":"AETHERIA — LUXURY FASHION ARCHIVE","category":"Creative Direction","year":"2024","client":"Maison Aetheria Paris","metrics":"Awwwards Site of the Day","image":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=85","summary":"Interactive lookbook and digital flagship store featuring fluid scroll-jacked transitions, custom variable typography, and instant checkout micro-interactions.","deliverables":["Art Direction","Headless Commerce","Custom Typeface","GSAP Motion"]},{"id":3,"title":"PULSEZERO — FINTECH DEFI TERMINAL","category":"Product Design","year":"2024","client":"PulseZero Zürich","metrics":"$420M+ Volume Processed","image":"https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=85","summary":"High-frequency algorithmic trading cockpit engineered for zero-latency visual feedback, high-contrast dark mode ergonomics, and modular widget layouts.","deliverables":["Product Strategy","UI Engineering","Data Visualization","Design Tokens"]},{"id":4,"title":"MONOLITH — ARCHITECTURAL BIENNALE","category":"Brand & Digital","year":"2024","client":"Nordic Pavilion","metrics":"1.2M+ Interactive Sessions","image":"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85","summary":"Brutalist kinetic identity and immersive exhibition guide that responds to visitor audio and cursor velocity in real time.","deliverables":["Kinetic Identity","Interactive Web","Sound Design","Wayfinding"]}],"services":[{"id":"01","title":"KINETIC WEB & FRONTEND ARCHITECTURE","description":"Bespoke React, Next.js, and WebGL experiences engineered for 60fps fluidity, buttery smooth page transitions, and production-grade HTTPS scalability.","tags":["React / Next.js","Tailwind CSS","WebGL / Three.js","60FPS Motion"],"previewImg":"https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"},{"id":"02","title":"DIGITAL ART DIRECTION & BRAND SYSTEMS","description":"High-impact visual identities that merge Swiss typographic precision with neo-brutalist color stories, custom iconography, and motion guidelines.","tags":["Visual Identity","Typography Systems","Design Tokens","Brand Books"],"previewImg":"https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80"},{"id":"03","title":"INTERACTIVE PRODUCT & UI/UX DESIGN","description":"Conversion-obsessed product interfaces, interactive prototypes, and comprehensive Figma component libraries built for ambitious startups.","tags":["Figma Systems","Interactive Prototyping","User Flows","Design Ops"],"previewImg":"https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80"},{"id":"04","title":"MOTION DESIGN & MICRO-INTERACTIONS","description":"Signature hover physics, magnetic buttons, scroll-triggered storytelling, and custom SVG animations that make digital products feel alive.","tags":["Micro-Interactions","SVG Physics","Scroll Storytelling","3D Parallax"],"previewImg":"https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80"}],"experience":[{"role":"Principal Creative Developer","company":"Studio Matthew / Independent","period":"2022 — PRESENT","highlight":"Leading digital flagships for Fortune 500 & YC startups"},{"role":"Senior Interactive Art Director","company":"Plainthing / Kinetic Collective","period":"2020 — 2022","highlight":"3x Awwwards SOTD & FWA of the Day Winner"},{"role":"Lead UI/UX Designer","company":"Hyperion Digital London","period":"2018 — 2020","highlight":"Architected design systems for 14+ global products"}],"metrics":[{"num":"48+","label":"Global Awards & FWA / Awwwards Nods"},{"num":"120+","label":"Shipped Digital Products & Brands"},{"num":"99.8%","label":"Client Retention & Satisfaction"},{"num":"$250M+","label":"Client Valuation Growth Enabled"}],"testimonials":[{"quote":"He transformed our entire brand perception in 6 weeks. The kinetic animations and attention to typographic detail doubled our enterprise inbound leads.","author":"ELENA ROSTOVA","role":"VP of Design at Kinetix Labs"},{"quote":"Rarely do you find someone who operates at the pinnacle of both art direction and production frontend code. Every micro-interaction feels intentional.","author":"MARCUS VANCE","role":"Founder at PulseZero Zürich"}],"aboutHeadline":"I bridge the gap between radical visual concepts and bulletproof frontend engineering.","expBadge":"8+ YRS EXP","_savedAt":1793684844320};
-    const p = SITE.profile;
+    const DEFAULT_SITE = {
+      "profile": {
+        "fullName": "BIEN ALEXIE V. VENTURA",
+        "heroName": "BIEN",
+        "roleBadge": "CREATIVE DEVELOPER & UI/UX DESIGNER",
+        "tagline": "Crafting kinetic digital experiences, bold brand systems & interactive web architecture that leave a lasting impression.",
+        "location": "BASED IN BAGUIO, PHILIPPINES — WORKING GLOBALLY",
+        "email": "hello@bien.studio",
+        "availability": "AVAILABLE FOR Q2/Q3 FREELANCE",
+        "portraitUrl": "ac192a20-0841-47db-bc7b-55125b76d965_3.png",
+        "portraitScale": 1,
+        "portraitOffsetY": 0,
+        "portraitFilter": "natural",
+        "portraitShape": "brutalist",
+        "accentColor": "#D2FF28",
+        "secondaryAccent": "#FF4D1C"
+      },
+      "sectionHeaders": {
+        "introLabel": "// 01 — INTRODUCTION",
+        "servicesLabel": "// 02 — CAPABILITIES",
+        "servicesTitle": "WHAT I",
+        "servicesAccent": "architect",
+        "workLabel": "// 03 — CASE STUDIES",
+        "workTitle": "SELECTED",
+        "workAccent": "works",
+        "aboutLabel": "// 04 — ABOUT & METRICS",
+        "aboutTitle": "BUILT WHERE design MEETS CODE.",
+        "timelineTitle": "EXPERIENCE TIMELINE",
+        "reviewsLabel": "// 05 — ENDORSEMENTS",
+        "reviewsTitle": "CLIENT",
+        "reviewsAccent": "voices",
+        "contactLabel": "// 06 — INITIATE A PROJECT",
+        "contactTitle": "LET'S BUILD NEXT-GEN WORK.",
+        "inquiryTitle": "QUICK INQUIRY",
+        "inquiryBtn": "Send Project Brief ↗",
+        "footerText": "© 2026 BIEN ALEXIE V. VENTURA — ALL RIGHTS RESERVED.",
+        "marqueeText": "✦ AVAILABLE FOR SELECT FREELANCE ✦ KINETIC WEB ARCHITECTURE ✦ ART DIRECTION ✦ BRAND SYSTEMS"
+      },
+      "projects": [
+        {
+          "id": 1,
+          "title": "KINETIX OS — SPATIAL DESIGN SYSTEM",
+          "category": "UI/UX & WebGL",
+          "year": "2025",
+          "client": "Kinetix Labs Inc.",
+          "metrics": "+184% Conversion Lift",
+          "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
+          "summary": "A next-generation spatial interface and motion language built for an AI-driven hardware startup, blending real-time 3D shaders with brutalist editorial typography.",
+          "deliverables": ["Design System", "WebGL Shaders", "React Architecture", "Brand Motion"]
+        },
+        {
+          "id": 2,
+          "title": "AETHERIA — LUXURY FASHION ARCHIVE",
+          "category": "Creative Direction",
+          "year": "2024",
+          "client": "Maison Aetheria Paris",
+          "metrics": "Awwwards Site of the Day",
+          "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=85",
+          "summary": "Interactive lookbook and digital flagship store featuring fluid scroll-jacked transitions, custom variable typography, and instant checkout micro-interactions.",
+          "deliverables": ["Art Direction", "Headless Commerce", "Custom Typeface", "GSAP Motion"]
+        },
+        {
+          "id": 3,
+          "title": "PULSEZERO — FINTECH DEFI TERMINAL",
+          "category": "Product Design",
+          "year": "2024",
+          "client": "PulseZero Zürich",
+          "metrics": "$420M+ Volume Processed",
+          "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=85",
+          "summary": "High-frequency algorithmic trading cockpit engineered for zero-latency visual feedback, high-contrast dark mode ergonomics, and modular widget layouts.",
+          "deliverables": ["Product Strategy", "UI Engineering", "Data Visualization", "Design Tokens"]
+        },
+        {
+          "id": 4,
+          "title": "MONOLITH — ARCHITECTURAL BIENNALE",
+          "category": "Brand & Digital",
+          "year": "2024",
+          "client": "Nordic Pavilion",
+          "metrics": "1.2M+ Interactive Sessions",
+          "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
+          "summary": "Brutalist kinetic identity and immersive exhibition guide that responds to visitor audio and cursor velocity in real time.",
+          "deliverables": ["Kinetic Identity", "Interactive Web", "Sound Design", "Wayfinding"]
+        }
+      ],
+      "services": [
+        {
+          "id": "01",
+          "title": "KINETIC WEB & FRONTEND ARCHITECTURE",
+          "description": "Bespoke React, Next.js, and WebGL experiences engineered for 60fps fluidity, buttery smooth page transitions, and production-grade HTTPS scalability.",
+          "tags": ["React / Next.js", "Tailwind CSS", "WebGL / Three.js", "60FPS Motion"],
+          "previewImg": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          "id": "02",
+          "title": "DIGITAL ART DIRECTION & BRAND SYSTEMS",
+          "description": "High-impact visual identities that merge Swiss typographic precision with neo-brutalist color stories, custom iconography, and motion guidelines.",
+          "tags": ["Visual Identity", "Typography Systems", "Design Tokens", "Brand Books"],
+          "previewImg": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          "id": "03",
+          "title": "INTERACTIVE PRODUCT & UI/UX DESIGN",
+          "description": "Conversion-obsessed product interfaces, interactive prototypes, and comprehensive Figma component libraries built for ambitious startups.",
+          "tags": ["Figma Systems", "Interactive Prototyping", "User Flows", "Design Ops"],
+          "previewImg": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          "id": "04",
+          "title": "MOTION DESIGN & MICRO-INTERACTIONS",
+          "description": "Signature hover physics, magnetic buttons, scroll-triggered storytelling, and custom SVG animations that make digital products feel alive.",
+          "tags": ["Micro-Interactions", "SVG Physics", "Scroll Storytelling", "3D Parallax"],
+          "previewImg": "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80"
+        }
+      ],
+      "experience": [
+        {
+          "role": "Principal Creative Developer",
+          "company": "Studio Matthew / Independent",
+          "period": "2022 — PRESENT",
+          "highlight": "Leading digital flagships for Fortune 500 & YC startups"
+        },
+        {
+          "role": "Senior Interactive Art Director",
+          "company": "Plainthing / Kinetic Collective",
+          "period": "2020 — 2022",
+          "highlight": "3x Awwwards SOTD & FWA of the Day Winner"
+        },
+        {
+          "role": "Lead UI/UX Designer",
+          "company": "Hyperion Digital London",
+          "period": "2018 — 2020",
+          "highlight": "Architected design systems for 14+ global products"
+        }
+      ],
+      "metrics": [
+        { "num": "48+", "label": "Global Awards & FWA / Awwwards Nods" },
+        { "num": "120+", "label": "Shipped Digital Products & Brands" },
+        { "num": "99.8%", "label": "Client Retention & Satisfaction" },
+        { "num": "$250M+", "label": "Client Valuation Growth Enabled" }
+      ],
+      "testimonials": [
+        {
+          "quote": "He transformed our entire brand perception in 6 weeks. The kinetic animations and attention to typographic detail doubled our enterprise inbound leads.",
+          "author": "ELENA ROSTOVA",
+          "role": "VP of Design at Kinetix Labs"
+        },
+        {
+          "quote": "Rarely do you find someone who operates at the pinnacle of both art direction and production frontend code. Every micro-interaction feels intentional.",
+          "author": "MARCUS VANCE",
+          "role": "Founder at PulseZero Zürich"
+        }
+      ],
+      "aboutHeadline": "I bridge the gap between radical visual concepts and bulletproof frontend engineering."
+    };
+
+    const STORAGE_KEY = "bien_portfolio_v5_color";
+    let SITE = loadSiteData();
+    let p = SITE.profile;
+    let sh = SITE.sectionHeaders;
+
+    const PAGES = ['home', 'services', 'work', 'about', 'reviews', 'contact'];
+    let currentPage = 'home';
     let activeServiceIdx = 0;
     let currentCategory = 'ALL';
+    let editMode = false;
+    let cmsOpen = false;
+    let cmsTab = 'home';
+
+    function loadSiteData() {
+      try {
+        // Purge old cached keys so corrupted base64 WebP or grayscale filters can never appear
+        localStorage.removeItem("BIEN_PORTFOLIO_CMS_V2");
+        localStorage.removeItem("BIEN_PORTFOLIO_CMS_V3_COLOR");
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const mergedProfile = { ...DEFAULT_SITE.profile, ...(parsed.profile || {}) };
+          if (
+            !mergedProfile.portraitUrl ||
+            mergedProfile.portraitUrl.startsWith("data:image/webp;base64")
+          ) {
+            mergedProfile.portraitUrl = "ac192a20-0841-47db-bc7b-55125b76d965_3.png";
+          }
+          mergedProfile.portraitFilter = "natural";
+          return {
+            ...DEFAULT_SITE,
+            ...parsed,
+            profile: mergedProfile,
+            sectionHeaders: { ...DEFAULT_SITE.sectionHeaders, ...(parsed.sectionHeaders || {}) }
+          };
+        }
+      } catch (e) {
+        console.warn("Could not read saved site data", e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_SITE));
+    }
+
+    function saveSiteData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(SITE));
+      } catch (e) {
+        console.warn("Could not save site data", e);
+      }
+    }
+
+    // Prevent wheel/touch scrolling on the main viewport (only allow inside CMS drawer or modal if open)
+    window.addEventListener('wheel', (e) => {
+      if (!e.target.closest('.allow-inner-scroll')) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!e.target.closest('.allow-inner-scroll')) {
+        e.preventDefault();
+      }
+    }, { passive: false });
 
     function getShapeStyle(shape) {
       if (shape === 'arch') return 'border-radius: 999px 999px 28px 28px;';
@@ -61,14 +356,14 @@
       if (filter === 'editorial-bw') return 'filter: grayscale(100%) contrast(1.18) brightness(0.96);';
       if (filter === 'high-contrast') return 'filter: contrast(1.28) saturate(1.15);';
       if (filter === 'lime-duotone') return 'filter: grayscale(100%) sepia(80%) hue-rotate(38deg) saturate(350%) contrast(1.15);';
-      return 'filter: none;';
+      return 'filter: none !important;';
     }
 
     function getHeroFontSize(name) {
       const len = (name || '').length;
-      if (len > 14) return 'clamp(2.6rem, 7.8vw, 7.2rem)';
-      if (len > 8) return 'clamp(3.2rem, 10.5vw, 10rem)';
-      return 'clamp(4.4rem, 15vw, 14rem)';
+      if (len > 14) return 'clamp(2.4rem, 7vw, 6.2rem)';
+      if (len > 8) return 'clamp(3rem, 9.5vw, 8.8rem)';
+      return 'clamp(5rem, 16vw, 15.5rem)';
     }
 
     let introRaf = null;
@@ -92,9 +387,8 @@
           </div>
           <div class="relative z-10 my-auto flex flex-col items-center justify-center text-center py-6 w-full">
             <div class="relative w-28 h-36 sm:w-36 sm:h-44 mb-6 overflow-hidden border-2 border-[#D2FF28] shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-[#16161A]">
-              <img src="${p.portraitUrl}" alt="${p.heroName}" style="${getFilterStyle(p.portraitFilter)}" class="w-full h-full object-cover" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10]/80 via-transparent to-transparent"></div>
-              <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[9px] font-extrabold uppercase tracking-widest text-[#D2FF28]">
+              <img src="${p.portraitUrl}" onerror="if(!this.dataset.f1){this.dataset.f1='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965_2.png';}else if(!this.dataset.f2){this.dataset.f2='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965.png';}" alt="${p.heroName}" style="filter: none !important;" class="w-full h-full object-cover object-top" />
+              <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[9px] font-extrabold uppercase tracking-widest text-[#D2FF28] drop-shadow">
                 <span>FOLIO</span>
                 <span>2026</span>
               </div>
@@ -123,7 +417,7 @@
         </div>
       `;
 
-      const duration = 2600;
+      const duration = 2400;
       const startTime = performance.now();
 
       function tick(now) {
@@ -147,7 +441,7 @@
         } else {
           setTimeout(() => {
             window.skipEmbedIntro();
-          }, 420);
+          }, 380);
         }
       }
 
@@ -168,14 +462,14 @@
     };
 
     function bindHeroParallax() {
-      const heroSection = document.getElementById('top');
+      const heroSection = document.getElementById('hero-stage');
       const card3d = document.getElementById('hero-card-3d');
       if (!heroSection || !card3d) return;
 
       heroSection.addEventListener('mousemove', (e) => {
         const rect = heroSection.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
-        const y = -((e.clientY - rect.top) / rect.height - 0.5) * 14;
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
+        const y = -((e.clientY - rect.top) / rect.height - 0.5) * 12;
         card3d.style.transform = `perspective(1100px) rotateX(${y}deg) rotateY(${x}deg)`;
       });
 
@@ -184,282 +478,913 @@
       });
     }
 
-    function renderApp() {
+    // Navigate between discrete non-scrollable pages via buttons only
+    window.navigateTo = function(pageId) {
+      if (!PAGES.includes(pageId)) return;
+      currentPage = pageId;
+      cmsTab = pageId;
+      renderApp();
+      if (cmsOpen) renderCMSDrawer();
+    };
+
+    window.stepPage = function(delta) {
+      const idx = PAGES.indexOf(currentPage);
+      const nextIdx = (idx + delta + PAGES.length) % PAGES.length;
+      window.navigateTo(PAGES[nextIdx]);
+    };
+
+    // Inline editing helper attributes
+    function editAttr(path) {
+      if (!editMode) return '';
+      return `contenteditable="true" spellcheck="false" data-edit-path="${path}" onclick="event.stopPropagation()" onblur="window.handleInlineBlur(this)"`;
+    }
+
+    window.handleInlineBlur = function(el) {
+      const path = el.getAttribute('data-edit-path');
+      if (!path) return;
+      const val = el.innerText.trim();
+      const parts = path.split('.');
+      let target = SITE;
+      for (let i = 0; i < parts.length - 1; i++) {
+        target = target[parts[i]];
+      }
+      target[parts[parts.length - 1]] = val;
+      saveSiteData();
+      if (cmsOpen) renderCMSDrawer();
+    };
+
+    window.toggleEditMode = function() {
+      editMode = !editMode;
+      cmsOpen = editMode;
+      cmsTab = currentPage;
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.toggleCMSDrawer = function(forceState) {
+      cmsOpen = typeof forceState === 'boolean' ? forceState : !cmsOpen;
+      renderCMSDrawer();
+    };
+
+    function renderActivePageContent() {
+      const heroSize = getHeroFontSize(p.heroName);
       const categories = ['ALL', ...new Set(SITE.projects.map(x => x.category))];
       const filteredProjects = currentCategory === 'ALL' ? SITE.projects : SITE.projects.filter(x => x.category === currentCategory);
-      const heroSize = getHeroFontSize(p.heroName);
 
-      document.getElementById('portfolio-root').innerHTML = `
-        <!-- Top Nav -->
-        <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0E0E10]/90 border-b border-white/10">
-          <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-3 min-w-0">
-              <a href="#top" class="font-display font-extrabold text-sm sm:text-base md:text-lg tracking-wider uppercase text-[#F4F1EA] flex items-center gap-2 group whitespace-nowrap">
-                <span class="group-hover:text-[#D2FF28] transition-colors">${p.fullName || 'BIEN ALEXIE V. VENTURA'}</span>
-                <span style="background:${p.accentColor}" class="w-2.5 h-2.5 rounded-full inline-block shrink-0 group-hover:scale-125 transition-transform"></span>
-              </a>
-            </div>
-            <nav class="hidden xl:flex items-center gap-1 p-1.5 rounded-full bg-[#16161A] border border-white/10">
-              <a href="#services" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Services</a>
-              <a href="#work" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Selected Works</a>
-              <a href="#about" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">About & Metrics</a>
-              <a href="#reviews" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Reviews</a>
-              <a href="#contact" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:bg-[#D2FF28] hover:text-[#0E0E10] transition-all">Contact</a>
-            </nav>
-            <div class="flex items-center gap-2.5 shrink-0">
-              <button onclick="playIntroCurtain()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 transition-colors cursor-pointer">
-                <span class="text-[#D2FF28]"></span> Replay Intro
-              </button>
-              <a href="#contact" style="background:${p.accentColor}" class="px-5 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
-                Let's Talk ↗
-              </a>
-            </div>
-          </div>
-        </header>
+      if (currentPage === 'home') {
+        return `
+          <section id="hero-stage" class="page-view-enter relative flex-1 flex flex-col justify-between px-4 sm:px-8 py-4 sm:py-6 max-w-7xl w-full mx-auto overflow-hidden">
+            <!-- Ambient radial glow behind portrait -->
+            <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[360px] rounded-full blur-[160px] opacity-15" style="background: radial-gradient(circle, ${p.accentColor} 0%, ${p.secondaryAccent} 100%);"></div>
 
-        <!-- Hero Section -->
-        <section id="top" class="relative pt-8 pb-20 sm:pt-14 sm:pb-28 px-4 sm:px-8 max-w-7xl mx-auto">
-          <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#16161A] border border-white/10">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#D2FF28] animate-ping"></span>
-              <span class="text-xs font-bold uppercase tracking-widest text-zinc-200">${p.availability}</span>
-            </div>
-            <div class="text-xs font-bold uppercase tracking-widest text-zinc-400">${p.location}</div>
-            <div class="px-4 py-1.5 rounded-full border border-white/15 bg-[#16161A] text-xs font-bold uppercase tracking-widest text-[#D2FF28]">${p.roleBadge}</div>
-          </div>
+            <!-- Hero Top Status Metadata Row (3 items across below header matching screenshot) -->
+            <div class="relative z-30 flex flex-wrap items-center justify-between gap-3 shrink-0">
+              <!-- Left Availability Pill -->
+              <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#16161A] border border-white/10 shadow-sm">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#D2FF28] shadow-[0_0_10px_#D2FF28]"></span>
+                <span ${editAttr('profile.availability')} class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-zinc-100">${p.availability}</span>
+              </div>
 
-          <div class="relative flex flex-col items-center justify-center my-4 sm:my-10">
-            <!-- LAYER 1 (BEHIND PORTRAIT): SOLID FILLED WHITE TEXT -->
-            <h1 style="font-size: ${heroSize}; line-height: 0.88; letter-spacing: -0.03em;" class="font-display font-extrabold uppercase text-center select-none pointer-events-none z-10 w-full break-words px-4 goal-knockout-solid">
-          <div class="relative flex flex-col items-center justify-center my-4 sm:my-10 w-full">
-            <!-- CENTERED HERO NAME WITH VERTICAL FADE EFFECT BEHIND PORTRAIT -->
-            <div class="w-full flex justify-center items-center z-10 pointer-events-none select-none">
-              <h1 style="font-size: ${heroSize}; line-height: 0.88; letter-spacing: -0.04em;" class="font-display font-extrabold uppercase text-center w-full break-words px-4 hero-text-fade">
-                ${p.heroName}
-              </h1>
-            </div>
+              <!-- Center Location Pin -->
+              <div class="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                <span class="text-[#FF2A5F]">📍</span>
+                <span ${editAttr('profile.location')}>${p.location}</span>
+              </div>
 
-            <!-- 3D PARALLAX PORTRAIT -->
-            <div class="relative z-20 -mt-8 sm:-mt-16 md:-mt-24 flex flex-col items-center">
-              <div id="hero-card-3d" class="hero-card-3d relative w-[275px] h-[355px] sm:w-[350px] sm:h-[450px] p-2 bg-gradient-to-b from-white/25 via-white/5 to-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.85)] border border-white/20" style="${getShapeStyle(p.portraitShape)}">
-                <div class="w-full h-full overflow-hidden bg-[#16161A] relative" style="${getShapeStyle(p.portraitShape)}">
-                  <img src="${p.portraitUrl}" alt="${p.heroName}" style="transform: scale(${p.portraitScale}) translateY(${p.portraitOffsetY}px); ${getFilterStyle(p.portraitFilter)}" class="w-full h-full object-cover object-center transition-all duration-300" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10]/65 via-transparent to-transparent pointer-events-none"></div>
-                </div>
+              <!-- Right Role Pill (Orange/Coral Border & Text) -->
+              <div class="px-4 py-2 rounded-full border border-[#FF4D1C]/40 bg-[#FF4D1C]/10 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#FF4D1C] flex items-center gap-2">
+                <span>✦</span>
+                <span ${editAttr('profile.roleBadge')}>${p.roleBadge}</span>
               </div>
             </div>
-          </div>
 
-          <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pt-8 border-t border-white/10">
-            <div class="lg:col-span-7">
-              <div class="flex flex-wrap items-center gap-3 mb-3">
-                <p class="text-xs font-bold uppercase tracking-widest text-[#D2FF28]">// 01 — INTRODUCTION</p>
-                <span style="background:${p.accentColor}" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[#0E0E10] font-extrabold text-[11px] uppercase tracking-wider shadow-md">
-                  ★ ${SITE.expBadge || '8+ YRS EXP'}
-                </span>
+            <!-- Hero Centerpiece: 3-Layer Stage (Portrait + Giant "BIEN" Knockout & Fade Effect, No Red Scroll Button, No 8+ YRS EXP Badge) -->
+            <div class="relative flex items-center justify-center my-auto w-full py-2">
+              <!-- LAYER 1 (BEHIND PORTRAIT, z-10): Giant "BIEN" Solid White-to-Silver Gradient Fill -->
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none select-none overflow-visible">
+                <h1
+                  style="font-size: ${heroSize}; line-height: 0.86; letter-spacing: -0.03em;"
+                  class="font-display font-extrabold uppercase text-center select-none pointer-events-none w-full whitespace-nowrap px-2 hero-knockout-solid"
+                >
+                  ${p.heroName}
+                </h1>
               </div>
-              <p class="text-xl sm:text-2xl md:text-3xl font-medium text-zinc-100 leading-snug">${p.tagline}</p>
-            </div>
-            <div class="lg:col-span-5 flex flex-wrap lg:justify-end gap-3">
-              <a href="#work" style="background:${p.accentColor}" class="px-6 py-4 rounded-full font-extrabold text-xs uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-lg">Explore Works ↗</a>
-              <a href="#contact" class="px-6 py-4 rounded-full font-extrabold text-xs uppercase tracking-wider bg-[#16161A] text-white border border-white/15 hover:border-[#D2FF28] transition-colors">Contact Studio</a>
-            </div>
-          </div>
-        </section>
 
-        <!-- Straight Marquee Strip -->
-        <div style="background:${p.accentColor}" class="py-4 border-y-2 border-[#0E0E10] text-[#0E0E10] overflow-hidden shadow-2xl my-6">
-          <div class="animate-marquee flex items-center">
-            ${Array(8).fill(`<span class="font-display font-extrabold text-sm sm:text-base uppercase tracking-wider mx-6 flex items-center gap-3">✦ AVAILABLE FOR SELECT FREELANCE ✦ KINETIC WEB ARCHITECTURE ✦ ART DIRECTION ✦ BRAND SYSTEMS</span>`).join('')}
-          </div>
-        </div>
-
-        <!-- Services Accordion -->
-        <section id="services" class="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-          <div class="mb-12">
-            <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-2">// 02 — CAPABILITIES</span>
-            <h2 class="font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tight">WHAT I <span class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">architect</span></h2>
-          </div>
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div class="lg:col-span-7 divide-y divide-white/10 border-y border-white/10">
-              ${SITE.services.map((s, idx) => `
-                <div onclick="selectService(${idx})" class="py-7 px-4 cursor-pointer transition-all ${activeServiceIdx === idx ? 'bg-white/[0.04]' : 'hover:bg-white/[0.02]'}">
-                  <div class="flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-4">
-                      <span class="font-display font-extrabold text-sm px-3 py-1 rounded-full border ${activeServiceIdx === idx ? 'bg-[#D2FF28] text-[#0E0E10] border-[#D2FF28]' : 'text-zinc-400 border-white/15'}">${s.id}</span>
-                      <h3 class="font-display font-extrabold text-xl sm:text-2xl uppercase">${s.title}</h3>
-                    </div>
-                    <span class="w-10 h-10 rounded-full flex items-center justify-center border ${activeServiceIdx === idx ? 'bg-[#D2FF28] text-[#0E0E10] border-[#D2FF28] rotate-45' : 'border-white/15 text-zinc-400'} transition-transform">↗</span>
-                  </div>
-                  ${activeServiceIdx === idx ? `
-                    <div class="mt-4 pl-0 sm:pl-14">
-                      <p class="text-zinc-300 text-sm sm:text-base leading-relaxed mb-4">${s.description}</p>
-                      <div class="flex flex-wrap gap-2">
-                        ${s.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#16161A] border border-white/10 text-zinc-300">${t}</span>`).join('')}
-                      </div>
-                    </div>
-                  ` : ''}
-                </div>
-              `).join('')}
-            </div>
-            <div class="lg:col-span-5">
-              <div class="rounded-3xl overflow-hidden border border-white/15 bg-[#16161A] p-3">
-                <div class="relative aspect-[4/3] rounded-2xl overflow-hidden">
-                  <img src="${SITE.services[activeServiceIdx].previewImg}" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-transparent to-transparent"></div>
-                  <div class="absolute bottom-4 left-4 right-4">
-                    <span class="px-2.5 py-1 rounded-md bg-[#D2FF28] text-[#0E0E10] font-extrabold text-[10px] uppercase">${SITE.services[activeServiceIdx].id} // PREVIEW</span>
-                    <p class="font-display font-extrabold text-lg uppercase text-white mt-1">${SITE.services[activeServiceIdx].title}</p>
-                  </div>
+              <!-- LAYER 2 (MIDDLE, z-20): 3D Parallax Full-Color Portrait Frame -->
+              <div class="relative z-20 flex items-center justify-center">
+                <div
+                  id="hero-card-3d"
+                  class="hero-card-3d relative w-[260px] h-[340px] sm:w-[330px] sm:h-[430px] md:w-[350px] md:h-[450px] border border-white/25 bg-[#141417] shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden"
+                  style="${getShapeStyle(p.portraitShape)}"
+                >
+                  <img
+                    id="hero-portrait-img"
+                    src="${p.portraitUrl}"
+                    onerror="if(!this.dataset.f1){this.dataset.f1='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965_2.png';}else if(!this.dataset.f2){this.dataset.f2='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965.png';}"
+                    alt="${p.heroName}"
+                    style="transform: scale(${p.portraitScale}) translateY(${p.portraitOffsetY}px); filter: none !important;"
+                    class="w-full h-full object-cover object-top transition-transform duration-300"
+                  />
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        <!-- Selected Works -->
-        <section id="work" class="py-24 px-4 sm:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-2">// 03 — CASE STUDIES</span>
-              <h2 class="font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tight">SELECTED <span class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">works</span></h2>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              ${categories.map(c => `
-                <button onclick="filterCategory('${c}')" class="px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider cursor-pointer transition-all ${currentCategory === c ? 'bg-[#D2FF28] text-[#0E0E10]' : 'bg-[#16161A] text-zinc-400 border border-white/10 hover:text-white'}">${c}</button>
-              `).join('')}
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            ${filteredProjects.map((proj, idx) => `
-              <article onclick="openProject(${proj.id})" class="group rounded-3xl bg-[#16161A] border border-white/10 overflow-hidden hover:border-[#D2FF28]/60 transition-all cursor-pointer flex flex-col justify-between">
-                <div>
-                  <div class="relative aspect-[16/11] overflow-hidden bg-zinc-900">
-                    <img src="${proj.image}" alt="${proj.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-transparent to-transparent opacity-70"></div>
-                    <div class="absolute top-4 left-4 right-4 flex justify-between">
-                      <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase bg-[#0E0E10]/80 text-white border border-white/15">0${idx + 1} / ${proj.category}</span>
-                      <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase bg-[#D2FF28] text-[#0E0E10]">${proj.metrics}</span>
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
-                      <div style="background:${p.accentColor}" class="px-5 py-3 rounded-full text-[#0E0E10] font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-2xl transform translate-y-3 group-hover:translate-y-0 transition-transform">
-                        <span>Inspect Case Study</span>
-                        <span>↗</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="p-6 sm:p-8">
-                    <div class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">${proj.client} • ${proj.year}</div>
-                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl uppercase text-white group-hover:text-[#D2FF28] transition-colors mb-3">${proj.title}</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">${proj.summary}</p>
-                  </div>
-                </div>
-              </article>
-            `).join('')}
-          </div>
-        </section>
-
-        <!-- About & Metrics Section -->
-        <section id="about" class="bg-[#F4F1EA] text-[#0E0E10] py-24 px-4 sm:px-8 rounded-t-[40px] sm:rounded-t-[64px]">
-          <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-black/15">
-              <div class="lg:col-span-5">
-                <span class="px-3.5 py-1.5 rounded-full bg-[#0E0E10] text-[#D2FF28] text-xs font-extrabold uppercase tracking-widest">// 04 — ABOUT & METRICS</span>
-                <h2 class="font-display font-extrabold text-4xl sm:text-5xl uppercase tracking-tight mt-4 leading-none">BUILT WHERE <span class="font-serif-editorial italic font-normal underline decoration-[#FF4D1C]">design</span> MEETS CODE.</h2>
+              <!-- LAYER 3 (IN FRONT OF PORTRAIT, z-30): Crisp White Outline + Subtle Horizontal Fade Fill -->
+              <div class="absolute inset-0 flex items-center justify-center z-30 pointer-events-none select-none overflow-visible">
+                <h1
+                  ${editAttr('profile.heroName')}
+                  style="font-size: ${heroSize}; line-height: 0.86; letter-spacing: -0.03em;"
+                  class="font-display font-extrabold uppercase text-center w-full whitespace-nowrap px-2 hero-knockout-outline hero-knockout-edge-fade ${editMode ? 'pointer-events-auto' : ''}"
+                >
+                  ${p.heroName}
+                </h1>
               </div>
+            </div>
+
+            <!-- Hero Bottom Intro Bar -->
+            <div class="relative z-30 grid grid-cols-1 lg:grid-cols-12 gap-4 items-end pt-3 border-t border-white/10 shrink-0">
               <div class="lg:col-span-7">
-                <p class="text-xl sm:text-2xl font-semibold leading-snug mb-8">${SITE.aboutHeadline}</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  ${SITE.metrics.map(m => `
-                    <div class="p-5 rounded-2xl bg-white border border-black/10 shadow-sm">
-                      <div class="font-display font-extrabold text-3xl text-[#0E0E10]">${m.num}</div>
-                      <div class="text-xs font-bold uppercase tracking-wider text-zinc-500 mt-1">${m.label}</div>
+                <p ${editAttr('sectionHeaders.introLabel')} class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#D2FF28] mb-1">${sh.introLabel}</p>
+                <p ${editAttr('profile.tagline')} class="text-xs sm:text-sm md:text-base font-medium text-zinc-200 leading-snug line-clamp-2">${p.tagline}</p>
+              </div>
+              <div class="lg:col-span-5 flex flex-wrap lg:justify-end gap-2.5">
+                <button onclick="navigateTo('work')" style="background:${p.accentColor}" class="px-5 py-2.5 rounded-full font-extrabold text-[11px] uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-lg cursor-pointer">
+                  Explore Works ↗
+                </button>
+                <button onclick="navigateTo('contact')" class="px-5 py-2.5 rounded-full font-extrabold text-[11px] uppercase tracking-wider bg-[#16161A] text-white border border-white/15 hover:border-[#D2FF28] transition-colors cursor-pointer">
+                  Contact Studio
+                </button>
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      if (currentPage === 'services') {
+        const sCurr = SITE.services[activeServiceIdx] || SITE.services[0];
+        return `
+          <section class="page-view-enter flex-1 flex flex-col justify-center px-4 sm:px-8 py-4 max-w-7xl w-full mx-auto overflow-hidden">
+            <div class="flex items-end justify-between mb-4 shrink-0">
+              <div>
+                <span ${editAttr('sectionHeaders.servicesLabel')} class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-1">${sh.servicesLabel}</span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight">
+                  <span ${editAttr('sectionHeaders.servicesTitle')}>${sh.servicesTitle}</span>
+                  <span ${editAttr('sectionHeaders.servicesAccent')} class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">${sh.servicesAccent}</span>
+                </h2>
+              </div>
+              ${editMode ? `<button onclick="openCMSForTab('services')" class="px-3.5 py-1.5 rounded-full bg-[#D2FF28] text-[#0E0E10] text-[11px] font-extrabold uppercase tracking-wider cursor-pointer">+ Edit / Add Services</button>` : ''}
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center min-h-0 flex-1">
+              <div class="lg:col-span-7 divide-y divide-white/10 border-y border-white/10">
+                ${SITE.services.map((s, idx) => `
+                  <div onclick="selectService(${idx})" class="py-3.5 px-3 cursor-pointer transition-all ${activeServiceIdx === idx ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}">
+                    <div class="flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-3">
+                        <span ${editAttr(`services.${idx}.id`)} class="font-display font-extrabold text-xs px-2.5 py-1 rounded-full border ${activeServiceIdx === idx ? 'bg-[#D2FF28] text-[#0E0E10] border-[#D2FF28]' : 'text-zinc-400 border-white/15'}">${s.id}</span>
+                        <h3 ${editAttr(`services.${idx}.title`)} class="font-display font-extrabold text-base sm:text-xl uppercase">${s.title}</h3>
+                      </div>
+                      <span class="w-8 h-8 rounded-full flex items-center justify-center border ${activeServiceIdx === idx ? 'bg-[#D2FF28] text-[#0E0E10] border-[#D2FF28] rotate-45' : 'border-white/15 text-zinc-400'} transition-transform text-xs">↗</span>
+                    </div>
+                    ${activeServiceIdx === idx ? `
+                      <div class="mt-2.5 pl-0 sm:pl-11">
+                        <p ${editAttr(`services.${idx}.description`)} class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-2.5">${s.description}</p>
+                        <div class="flex flex-wrap gap-1.5">
+                          ${(s.tags || []).map((t, tIdx) => `<span ${editAttr(`services.${idx}.tags.${tIdx}`)} class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#16161A] border border-white/10 text-zinc-300">${t}</span>`).join('')}
+                        </div>
+                      </div>
+                    ` : ''}
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="hidden lg:block lg:col-span-5">
+                ${sCurr ? `
+                  <div class="rounded-3xl overflow-hidden border border-white/15 bg-[#16161A] p-2.5 shadow-2xl">
+                    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden">
+                      <img src="${sCurr.previewImg}" class="w-full h-full object-cover" />
+                      <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-transparent to-transparent"></div>
+                      <div class="absolute bottom-4 left-4 right-4">
+                        <span class="px-2.5 py-1 rounded-md bg-[#D2FF28] text-[#0E0E10] font-extrabold text-[10px] uppercase">${sCurr.id} // PREVIEW</span>
+                        <p class="font-display font-extrabold text-base uppercase text-white mt-1">${sCurr.title}</p>
+                      </div>
+                    </div>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      if (currentPage === 'work') {
+        return `
+          <section class="page-view-enter flex-1 flex flex-col justify-center px-4 sm:px-8 py-4 max-w-7xl w-full mx-auto overflow-hidden">
+            <div class="flex flex-wrap items-end justify-between mb-4 gap-3 shrink-0">
+              <div>
+                <span ${editAttr('sectionHeaders.workLabel')} class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-1">${sh.workLabel}</span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight">
+                  <span ${editAttr('sectionHeaders.workTitle')}>${sh.workTitle}</span>
+                  <span ${editAttr('sectionHeaders.workAccent')} class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">${sh.workAccent}</span>
+                </h2>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5">
+                ${categories.map(c => `
+                  <button onclick="filterCategory('${c}')" class="px-3.5 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider cursor-pointer transition-all ${currentCategory === c ? 'bg-[#D2FF28] text-[#0E0E10]' : 'bg-[#16161A] text-zinc-400 border border-white/10 hover:text-white'}">${c}</button>
+                `).join('')}
+                ${editMode ? `<button onclick="openCMSForTab('work')" class="px-3.5 py-1.5 rounded-full bg-[#FF4D1C] text-white text-[11px] font-extrabold uppercase tracking-wider cursor-pointer">+ Manage Works</button>` : ''}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 min-h-0">
+              ${filteredProjects.map((proj) => {
+                const realIdx = SITE.projects.findIndex(x => x.id === proj.id);
+                return `
+                  <article onclick="openProject(${proj.id})" class="group rounded-2xl bg-[#16161A] border border-white/10 overflow-hidden hover:border-[#D2FF28]/60 transition-all cursor-pointer flex flex-col justify-between">
+                    <div>
+                      <div class="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+                        <img src="${proj.image}" alt="${proj.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-transparent to-transparent opacity-80"></div>
+                        <div class="absolute top-2.5 left-2.5 right-2.5 flex justify-between gap-1">
+                          <span ${editAttr(`projects.${realIdx}.category`)} class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-[#0E0E10]/85 text-white border border-white/15 truncate">${proj.category}</span>
+                          <span ${editAttr(`projects.${realIdx}.metrics`)} class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-[#D2FF28] text-[#0E0E10] shrink-0">${proj.metrics}</span>
+                        </div>
+                      </div>
+                      <div class="p-4">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1">
+                          <span ${editAttr(`projects.${realIdx}.client`)}>${proj.client}</span> • <span ${editAttr(`projects.${realIdx}.year`)}>${proj.year}</span>
+                        </div>
+                        <h3 ${editAttr(`projects.${realIdx}.title`)} class="font-display font-extrabold text-base sm:text-lg uppercase text-white group-hover:text-[#D2FF28] transition-colors mb-1.5 line-clamp-1">${proj.title}</h3>
+                        <p ${editAttr(`projects.${realIdx}.summary`)} class="text-zinc-400 text-xs leading-relaxed line-clamp-3">${proj.summary}</p>
+                      </div>
+                    </div>
+                    <div class="px-4 pb-3 pt-1 flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-[#D2FF28]">
+                      <span>Inspect Case Study</span>
+                      <span>↗</span>
+                    </div>
+                  </article>
+                `;
+              }).join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      if (currentPage === 'about') {
+        return `
+          <section class="page-view-enter flex-1 flex flex-col justify-center px-4 sm:px-8 py-4 max-w-7xl w-full mx-auto overflow-hidden">
+            <div class="bg-[#F4F1EA] text-[#0E0E10] p-6 sm:p-8 rounded-3xl shadow-2xl">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-6 border-b border-black/15 items-center">
+                <div class="lg:col-span-5">
+                  <span ${editAttr('sectionHeaders.aboutLabel')} class="px-3 py-1 rounded-full bg-[#0E0E10] text-[#D2FF28] text-[10px] font-extrabold uppercase tracking-widest inline-block">${sh.aboutLabel}</span>
+                  <h2 ${editAttr('sectionHeaders.aboutTitle')} class="font-display font-extrabold text-2xl sm:text-4xl uppercase tracking-tight mt-3 leading-none">${sh.aboutTitle}</h2>
+                </div>
+                <div class="lg:col-span-7">
+                  <p ${editAttr('aboutHeadline')} class="text-base sm:text-xl font-semibold leading-snug mb-4">${SITE.aboutHeadline}</p>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    ${SITE.metrics.map((m, idx) => `
+                      <div class="p-3.5 rounded-2xl bg-white border border-black/10 shadow-sm">
+                        <div ${editAttr(`metrics.${idx}.num`)} class="font-display font-extrabold text-xl sm:text-2xl text-[#0E0E10]">${m.num}</div>
+                        <div ${editAttr(`metrics.${idx}.label`)} class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mt-0.5 leading-tight">${m.label}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 ${editAttr('sectionHeaders.timelineTitle')} class="font-display font-extrabold text-lg uppercase">${sh.timelineTitle}</h3>
+                  ${editMode ? `<button onclick="openCMSForTab('about')" class="px-3 py-1 rounded-full bg-[#0E0E10] text-[#D2FF28] text-[10px] font-extrabold uppercase cursor-pointer">+ Edit Timeline & Metrics</button>` : ''}
+                </div>
+                <div class="divide-y divide-black/15 border-y border-black/15">
+                  ${SITE.experience.map((e, idx) => `
+                    <div class="py-3 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                      <div>
+                        <h4 ${editAttr(`experience.${idx}.role`)} class="font-display font-extrabold text-sm sm:text-base uppercase">${e.role}</h4>
+                        <p ${editAttr(`experience.${idx}.company`)} class="text-xs font-semibold text-zinc-600">${e.company}</p>
+                      </div>
+                      <p ${editAttr(`experience.${idx}.highlight`)} class="text-xs text-zinc-700 font-medium">${e.highlight}</p>
+                      <span ${editAttr(`experience.${idx}.period`)} class="px-3 py-1 rounded-full bg-[#0E0E10] text-[#F4F1EA] text-[10px] font-extrabold uppercase self-start md:self-center shrink-0">${e.period}</span>
                     </div>
                   `).join('')}
                 </div>
               </div>
             </div>
-            <div class="mt-16">
-              <h3 class="font-display font-extrabold text-2xl uppercase mb-8">EXPERIENCE TIMELINE</h3>
-              <div class="divide-y divide-black/15 border-y border-black/15">
-                ${SITE.experience.map(e => `
-                  <div class="py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                      <h4 class="font-display font-extrabold text-xl uppercase">${e.role}</h4>
-                      <p class="text-sm font-semibold text-zinc-600">${e.company}</p>
-                    </div>
-                    <p class="text-sm text-zinc-700 font-medium">${e.highlight}</p>
-                    <span class="px-4 py-1.5 rounded-full bg-[#0E0E10] text-[#F4F1EA] text-xs font-extrabold uppercase self-start md:self-center">${e.period}</span>
-                  </div>
-                `).join('')}
+          </section>
+        `;
+      }
+
+      if (currentPage === 'reviews') {
+        return `
+          <section class="page-view-enter flex-1 flex flex-col justify-center px-4 sm:px-8 py-4 max-w-7xl w-full mx-auto overflow-hidden">
+            <div class="flex items-end justify-between mb-6">
+              <div>
+                <span ${editAttr('sectionHeaders.reviewsLabel')} class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-1">${sh.reviewsLabel}</span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl uppercase">
+                  <span ${editAttr('sectionHeaders.reviewsTitle')}>${sh.reviewsTitle}</span>
+                  <span ${editAttr('sectionHeaders.reviewsAccent')} class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">${sh.reviewsAccent}</span>
+                </h2>
               </div>
+              ${editMode ? `<button onclick="openCMSForTab('reviews')" class="px-3.5 py-1.5 rounded-full bg-[#D2FF28] text-[#0E0E10] text-[11px] font-extrabold uppercase tracking-wider cursor-pointer">+ Add / Edit Reviews</button>` : ''}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              ${SITE.testimonials.map((t, idx) => `
+                <div class="p-6 sm:p-8 rounded-3xl bg-[#16161A] border border-white/10 flex flex-col justify-between">
+                  <p ${editAttr(`testimonials.${idx}.quote`)} class="text-base sm:text-xl text-zinc-200 leading-relaxed mb-6">"${t.quote}"</p>
+                  <div class="pt-4 border-t border-white/10">
+                    <div ${editAttr(`testimonials.${idx}.author`)} class="font-display font-extrabold text-sm uppercase text-white">${t.author}</div>
+                    <div ${editAttr(`testimonials.${idx}.role`)} class="text-xs text-zinc-400">${t.role}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      // Contact Page
+      return `
+        <section class="page-view-enter flex-1 flex flex-col justify-center px-4 sm:px-8 py-4 max-w-7xl w-full mx-auto overflow-hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="lg:col-span-7">
+              <span ${editAttr('sectionHeaders.contactLabel')} class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-3">${sh.contactLabel}</span>
+              <h2 ${editAttr('sectionHeaders.contactTitle')} class="font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tighter leading-none mb-6">${sh.contactTitle}</h2>
+              <a href="mailto:${p.email}" style="background:${p.accentColor}" class="inline-flex items-center gap-3 px-7 py-4 rounded-2xl text-[#0E0E10] font-display font-extrabold text-base sm:text-lg uppercase tracking-wider shadow-xl hover:scale-105 transition-transform">
+                <span ${editAttr('profile.email')}>${p.email}</span> ↗
+              </a>
+              <p ${editAttr('sectionHeaders.footerText')} class="mt-8 text-xs text-zinc-500 uppercase tracking-widest">${sh.footerText}</p>
+            </div>
+            <div class="lg:col-span-5 p-6 sm:p-7 rounded-3xl bg-[#16161A] border border-white/10">
+              <h3 ${editAttr('sectionHeaders.inquiryTitle')} class="font-display font-extrabold text-xl uppercase mb-4">${sh.inquiryTitle}</h3>
+              <form onsubmit="event.preventDefault(); this.innerHTML='<div class=\'p-6 rounded-2xl bg-[#D2FF28]/15 border border-[#D2FF28] text-center\'><p class=\'font-display font-extrabold text-xl text-[#D2FF28] uppercase mb-2\'>Inquiry Received ✓</p><p class=\'text-xs text-zinc-300\'>Thank you! We will respond within 24 hours.</p></div>';" class="space-y-3">
+                <input required placeholder="Your Name" class="w-full px-4 py-2.5 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none" />
+                <input required type="email" placeholder="Your Email" class="w-full px-4 py-2.5 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none" />
+                <textarea required rows="3" placeholder="Project details, timeline & goals..." class="w-full px-4 py-2.5 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none"></textarea>
+                <button type="submit" style="background:${p.accentColor}" class="w-full py-3.5 rounded-xl text-[#0E0E10] font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer hover:brightness-110 transition-all">
+                  <span ${editAttr('sectionHeaders.inquiryBtn')}>${sh.inquiryBtn}</span>
+                </button>
+              </form>
             </div>
           </div>
         </section>
+      `;
+    }
 
-        <!-- Reviews & Contact -->
-        <section id="reviews" class="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-2">// 05 — ENDORSEMENTS</span>
-          <h2 class="font-display font-extrabold text-4xl sm:text-5xl uppercase mb-12">CLIENT <span class="font-serif-editorial italic font-normal text-[#D2FF28] lowercase">voices</span></h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            ${SITE.testimonials.map(t => `
-              <div class="p-8 rounded-3xl bg-[#16161A] border border-white/10 flex flex-col justify-between">
-                <p class="text-lg sm:text-xl text-zinc-200 leading-relaxed mb-8">"${t.quote}"</p>
-                <div class="pt-4 border-t border-white/10">
-                  <div class="font-display font-extrabold text-sm uppercase text-white">${t.author}</div>
-                  <div class="text-xs text-zinc-400">${t.role}</div>
+    function renderApp() {
+      p = SITE.profile;
+      sh = SITE.sectionHeaders;
+
+      const navItems = [
+        { id: 'home', label: 'Home' },
+        { id: 'services', label: 'Services' },
+        { id: 'work', label: 'Selected Works' },
+        { id: 'about', label: 'About & Metrics' },
+        { id: 'reviews', label: 'Reviews' },
+        { id: 'contact', label: 'Contact' }
+      ];
+
+      document.getElementById('portfolio-root').innerHTML = `
+        <!-- Top Nav (Matches Screenshot Layout with BIEN ALEXIE V. VENTURA + Replay Intro on Left) -->
+        <header class="z-40 backdrop-blur-xl bg-[#0E0E10]/95 border-b border-white/10 shrink-0">
+          <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Left: BIEN ALEXIE V. VENTURA + Lime Dot + Replay Intro Pill -->
+            <div class="flex items-center gap-3 min-w-0">
+              <button onclick="navigateTo('home')" class="font-display font-extrabold text-xs sm:text-sm md:text-base tracking-wider uppercase text-[#F4F1EA] flex items-center gap-2 group whitespace-nowrap cursor-pointer bg-transparent border-0 p-0">
+                <span ${editAttr('profile.fullName')} class="group-hover:text-[#D2FF28] transition-colors">${p.fullName || 'BIEN ALEXIE V. VENTURA'}</span>
+                <span style="background:${p.accentColor}" class="w-2.5 h-2.5 rounded-full inline-block shrink-0 group-hover:scale-125 transition-transform"></span>
+              </button>
+              <button onclick="playIntroCurtain()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#16161A] hover:bg-white/10 border border-white/10 text-zinc-300 transition-colors cursor-pointer">
+                <span class="text-[#D2FF28] text-[9px]">▶</span> REPLAY INTRO
+              </button>
+            </div>
+
+            <!-- Center: Page Navigation Pill Buttons -->
+            <nav class="flex items-center gap-1 px-1.5 py-1 rounded-full bg-[#141417] border border-white/10 overflow-x-auto max-w-full">
+              ${navItems.map(item => `
+                <button
+                  onclick="navigateTo('${item.id}')"
+                  class="px-3 sm:px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-all cursor-pointer whitespace-nowrap ${
+                    currentPage === item.id
+                      ? 'bg-[#D2FF28] text-[#0E0E10] shadow-sm'
+                      : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                  }"
+                >
+                  ${item.label}
+                </button>
+              `).join('')}
+            </nav>
+
+            <!-- Right: Edit Site Toggle + Let's Talk CTA -->
+            <div class="flex items-center gap-2 shrink-0">
+              <button
+                onclick="toggleEditMode()"
+                class="px-3.5 py-2 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider border transition-all cursor-pointer ${
+                  editMode
+                    ? 'bg-[#FF4D1C] text-white border-[#FF4D1C] shadow-[0_0_20px_rgba(255,77,28,0.4)]'
+                    : 'bg-[#16161A] text-zinc-300 border-white/15 hover:border-[#D2FF28] hover:text-[#D2FF28]'
+                }"
+              >
+                ${editMode ? '✓ EDITING ON' : '✎ EDIT SITE'}
+              </button>
+              <button
+                onclick="navigateTo('contact')"
+                style="background:${p.accentColor}"
+                class="px-4 sm:px-5 py-2 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-[0_0_25px_rgba(210,255,40,0.3)] whitespace-nowrap cursor-pointer"
+              >
+                LET'S TALK ↗
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Active Non-Scrollable Page Container -->
+        <main class="flex-1 flex flex-col justify-between overflow-hidden min-h-0">
+          ${renderActivePageContent()}
+        </main>
+
+        <!-- Bottom Marquee & Button-Only Page Stepper Bar -->
+        <footer class="z-30 shrink-0">
+          <div style="background:${p.accentColor}" class="py-2 border-y border-[#0E0E10] text-[#0E0E10] overflow-hidden shadow-lg">
+            <div class="animate-marquee flex items-center">
+              ${Array(8).fill(`<span class="font-display font-extrabold text-[11px] sm:text-xs uppercase tracking-wider mx-6 flex items-center gap-3">${sh.marqueeText}</span>`).join('')}
+            </div>
+          </div>
+          <div class="bg-[#0A0A0C] border-t border-white/10 px-4 sm:px-8 py-2 flex items-center justify-between text-[11px]">
+            <div class="flex items-center gap-2">
+              <span class="text-zinc-500 font-bold uppercase tracking-widest">PAGE ${PAGES.indexOf(currentPage) + 1} / ${PAGES.length}</span>
+              <span class="text-[#D2FF28] font-extrabold uppercase tracking-widest">// ${currentPage.toUpperCase()}</span>
+              ${editMode ? `<span class="ml-2 px-2 py-0.5 rounded bg-[#D2FF28]/15 text-[#D2FF28] text-[10px] font-bold">Tip: Click any text on page to edit directly or use Studio Drawer</span>` : ''}
+            </div>
+            <div class="flex items-center gap-2">
+              ${editMode ? `<button onclick="toggleCMSDrawer()" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold uppercase tracking-wider cursor-pointer text-[10px]">${cmsOpen ? 'Hide Drawer' : 'Open CMS Drawer'}</button>` : ''}
+              <button onclick="stepPage(-1)" class="px-3 py-1 rounded-full bg-[#16161A] hover:bg-[#D2FF28] hover:text-[#0E0E10] border border-white/10 text-zinc-300 font-bold uppercase tracking-wider transition-colors cursor-pointer">
+                ← Prev Page
+              </button>
+              <button onclick="stepPage(1)" class="px-3 py-1 rounded-full bg-[#16161A] hover:bg-[#D2FF28] hover:text-[#0E0E10] border border-white/10 text-zinc-300 font-bold uppercase tracking-wider transition-colors cursor-pointer">
+                Next Page →
+              </button>
+            </div>
+          </div>
+        </footer>
+      `;
+
+      if (currentPage === 'home') {
+        bindHeroParallax();
+      }
+    }
+
+    // Comprehensive Studio CMS Drawer so the user can edit everything across all pages
+    window.openCMSForTab = function(tab) {
+      editMode = true;
+      cmsOpen = true;
+      cmsTab = tab;
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    function renderCMSDrawer() {
+      const root = document.getElementById('cms-drawer-root');
+      if (!root) return;
+      if (!editMode || !cmsOpen) {
+        root.innerHTML = '';
+        return;
+      }
+
+      const tabs = [
+        { id: 'home', label: '1. Home' },
+        { id: 'services', label: '2. Services' },
+        { id: 'work', label: '3. Works' },
+        { id: 'about', label: '4. About' },
+        { id: 'reviews', label: '5. Reviews' },
+        { id: 'contact', label: '6. Contact' }
+      ];
+
+      let tabBody = '';
+
+      if (cmsTab === 'home') {
+        tabBody = `
+          <div class="space-y-3">
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Top-Left Full Name</label>
+              <input value="${p.fullName}" oninput="updateProfileField('fullName', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Hero Big Text</label>
+                <input value="${p.heroName}" oninput="updateProfileField('heroName', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Accent Color</label>
+                <input type="color" value="${p.accentColor}" oninput="updateProfileField('accentColor', this.value)" class="w-full mt-1 h-9 rounded-lg bg-[#0E0E10] border border-white/15 cursor-pointer" />
+              </div>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Availability Pill</label>
+              <input value="${p.availability}" oninput="updateProfileField('availability', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Location Text</label>
+              <input value="${p.location}" oninput="updateProfileField('location', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Role Badge (Top Right)</label>
+              <input value="${p.roleBadge}" oninput="updateProfileField('roleBadge', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Hero Tagline</label>
+              <textarea rows="2" oninput="updateProfileField('tagline', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white">${p.tagline}</textarea>
+            </div>
+            <div class="p-3 rounded-xl bg-[#0E0E10] border border-white/10 space-y-2">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-[#D2FF28] block">Portrait Image & Style</label>
+              <input value="${p.portraitUrl}" oninput="updateProfileField('portraitUrl', this.value)" placeholder="Image URL or path" class="w-full px-3 py-1.5 rounded-lg bg-[#16161A] border border-white/10 text-xs text-white" />
+              <div class="flex items-center gap-2">
+                <label class="px-3 py-1.5 rounded-lg bg-[#D2FF28] text-[#0E0E10] hover:brightness-110 text-[10px] font-extrabold uppercase cursor-pointer">
+                  Upload Full-Color Portrait
+                  <input type="file" accept="image/*" onchange="uploadImageToField(this, 'profile.portraitUrl')" class="hidden" />
+                </label>
+                <button onclick="updateProfileField('portraitUrl', 'ac192a20-0841-47db-bc7b-55125b76d965_3.png'); updateProfileField('portraitFilter', 'natural');" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-zinc-300 cursor-pointer">Reset Color</button>
+              </div>
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <div>
+                  <label class="text-[10px] text-zinc-400">Filter</label>
+                  <select onchange="updateProfileField('portraitFilter', this.value)" class="w-full mt-0.5 px-2 py-1.5 rounded bg-[#16161A] border border-white/10 text-xs text-white">
+                    <option value="natural" ${p.portraitFilter === 'natural' ? 'selected' : ''}>Natural Full Color</option>
+                    <option value="editorial-bw" ${p.portraitFilter === 'editorial-bw' ? 'selected' : ''}>Editorial B&W</option>
+                    <option value="high-contrast" ${p.portraitFilter === 'high-contrast' ? 'selected' : ''}>High Contrast</option>
+                    <option value="lime-duotone" ${p.portraitFilter === 'lime-duotone' ? 'selected' : ''}>Lime Duotone</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-[10px] text-zinc-400">Frame Shape</label>
+                  <select onchange="updateProfileField('portraitShape', this.value)" class="w-full mt-0.5 px-2 py-1.5 rounded bg-[#16161A] border border-white/10 text-xs text-white">
+                    <option value="brutalist" ${p.portraitShape === 'brutalist' ? 'selected' : ''}>Sharp Brutalist</option>
+                    <option value="rounded" ${p.portraitShape === 'rounded' ? 'selected' : ''}>Rounded Card</option>
+                    <option value="arch" ${p.portraitShape === 'arch' ? 'selected' : ''}>Editorial Arch</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Marquee Strip Text</label>
+              <input value="${sh.marqueeText}" oninput="updateHeaderField('marqueeText', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+          </div>
+        `;
+      } else if (cmsTab === 'services') {
+        tabBody = `
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase text-[#D2FF28]">Services List (${SITE.services.length})</span>
+              <button onclick="addServiceItem()" class="px-3 py-1 rounded-lg bg-[#D2FF28] text-[#0E0E10] text-[10px] font-extrabold uppercase cursor-pointer">+ Add Service</button>
+            </div>
+            ${SITE.services.map((s, idx) => `
+              <div class="p-3 rounded-xl bg-[#0E0E10] border border-white/10 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <input value="${s.id}" oninput="updateArrayItem('services', ${idx}, 'id', this.value)" class="w-14 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs font-bold text-[#D2FF28]" />
+                  <input value="${s.title}" oninput="updateArrayItem('services', ${idx}, 'title', this.value)" class="flex-1 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs font-bold text-white" />
+                  <button onclick="removeArrayItem('services', ${idx})" class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] font-bold cursor-pointer">Delete</button>
+                </div>
+                <textarea rows="2" oninput="updateArrayItem('services', ${idx}, 'description', this.value)" class="w-full px-2 py-1.5 rounded bg-[#16161A] border border-white/10 text-xs text-zinc-300">${s.description}</textarea>
+                <input value="${(s.tags || []).join(', ')}" oninput="updateArrayTags('services', ${idx}, 'tags', this.value)" placeholder="Comma-separated tags" class="w-full px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-zinc-400" />
+                <div class="flex items-center gap-2">
+                  <input value="${s.previewImg}" oninput="updateArrayItem('services', ${idx}, 'previewImg', this.value)" placeholder="Preview Image URL" class="flex-1 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-zinc-400" />
+                  <label class="px-2.5 py-1 rounded bg-white/10 text-[10px] font-bold uppercase cursor-pointer text-white shrink-0">
+                    Upload
+                    <input type="file" accept="image/*" onchange="uploadImageToArray(this, 'services', ${idx}, 'previewImg')" class="hidden" />
+                  </label>
                 </div>
               </div>
             `).join('')}
           </div>
-        </section>
+        `;
+      } else if (cmsTab === 'work') {
+        tabBody = `
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase text-[#D2FF28]">Projects (${SITE.projects.length})</span>
+              <button onclick="addProjectItem()" class="px-3 py-1 rounded-lg bg-[#D2FF28] text-[#0E0E10] text-[10px] font-extrabold uppercase cursor-pointer">+ Add Project</button>
+            </div>
+            ${SITE.projects.map((proj, idx) => `
+              <div class="p-3 rounded-xl bg-[#0E0E10] border border-white/10 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <input value="${proj.title}" oninput="updateArrayItem('projects', ${idx}, 'title', this.value)" class="flex-1 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs font-bold text-white" />
+                  <button onclick="removeArrayItem('projects', ${idx})" class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] font-bold cursor-pointer">Delete</button>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5">
+                  <input value="${proj.category}" oninput="updateArrayItem('projects', ${idx}, 'category', this.value)" placeholder="Category" class="px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-white" />
+                  <input value="${proj.client}" oninput="updateArrayItem('projects', ${idx}, 'client', this.value)" placeholder="Client" class="px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-white" />
+                  <input value="${proj.year}" oninput="updateArrayItem('projects', ${idx}, 'year', this.value)" placeholder="Year" class="px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-white" />
+                </div>
+                <input value="${proj.metrics}" oninput="updateArrayItem('projects', ${idx}, 'metrics', this.value)" placeholder="Metrics Badge" class="w-full px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-[#D2FF28]" />
+                <textarea rows="2" oninput="updateArrayItem('projects', ${idx}, 'summary', this.value)" class="w-full px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs text-zinc-300">${proj.summary}</textarea>
+                <div class="flex items-center gap-2">
+                  <input value="${proj.image}" oninput="updateArrayItem('projects', ${idx}, 'image', this.value)" placeholder="Image URL" class="flex-1 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-zinc-400" />
+                  <label class="px-2.5 py-1 rounded bg-white/10 text-[10px] font-bold uppercase cursor-pointer text-white shrink-0">
+                    Upload
+                    <input type="file" accept="image/*" onchange="uploadImageToArray(this, 'projects', ${idx}, 'image')" class="hidden" />
+                  </label>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (cmsTab === 'about') {
+        tabBody = `
+          <div class="space-y-4">
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">About Headline</label>
+              <textarea rows="2" oninput="SITE.aboutHeadline=this.value;saveSiteData();renderApp();" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white">${SITE.aboutHeadline}</textarea>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase text-[#D2FF28]">Metrics</span>
+                <button onclick="addMetricItem()" class="px-2.5 py-1 rounded bg-[#D2FF28] text-[#0E0E10] text-[10px] font-extrabold uppercase cursor-pointer">+ Add Metric</button>
+              </div>
+              ${SITE.metrics.map((m, idx) => `
+                <div class="flex items-center gap-2">
+                  <input value="${m.num}" oninput="updateArrayItem('metrics', ${idx}, 'num', this.value)" class="w-24 px-2 py-1 rounded bg-[#0E0E10] border border-white/10 text-xs font-bold text-[#D2FF28]" />
+                  <input value="${m.label}" oninput="updateArrayItem('metrics', ${idx}, 'label', this.value)" class="flex-1 px-2 py-1 rounded bg-[#0E0E10] border border-white/10 text-xs text-white" />
+                  <button onclick="removeArrayItem('metrics', ${idx})" class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] cursor-pointer">✕</button>
+                </div>
+              `).join('')}
+            </div>
+            <div class="space-y-2 pt-2 border-t border-white/10">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase text-[#D2FF28]">Experience Timeline</span>
+                <button onclick="addExperienceItem()" class="px-2.5 py-1 rounded bg-[#D2FF28] text-[#0E0E10] text-[10px] font-extrabold uppercase cursor-pointer">+ Add Role</button>
+              </div>
+              ${SITE.experience.map((e, idx) => `
+                <div class="p-2.5 rounded-xl bg-[#0E0E10] border border-white/10 space-y-1.5">
+                  <div class="flex items-center justify-between gap-2">
+                    <input value="${e.role}" oninput="updateArrayItem('experience', ${idx}, 'role', this.value)" placeholder="Role" class="flex-1 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs font-bold text-white" />
+                    <button onclick="removeArrayItem('experience', ${idx})" class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] cursor-pointer">Delete</button>
+                  </div>
+                  <div class="grid grid-cols-2 gap-1.5">
+                    <input value="${e.company}" oninput="updateArrayItem('experience', ${idx}, 'company', this.value)" placeholder="Company" class="px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-zinc-300" />
+                    <input value="${e.period}" oninput="updateArrayItem('experience', ${idx}, 'period', this.value)" placeholder="Period" class="px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-[#D2FF28]" />
+                  </div>
+                  <input value="${e.highlight}" oninput="updateArrayItem('experience', ${idx}, 'highlight', this.value)" placeholder="Highlight" class="w-full px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-zinc-400" />
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (cmsTab === 'reviews') {
+        tabBody = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase text-[#D2FF28]">Client Reviews (${SITE.testimonials.length})</span>
+              <button onclick="addTestimonialItem()" class="px-3 py-1 rounded-lg bg-[#D2FF28] text-[#0E0E10] text-[10px] font-extrabold uppercase cursor-pointer">+ Add Review</button>
+            </div>
+            ${SITE.testimonials.map((t, idx) => `
+              <div class="p-3 rounded-xl bg-[#0E0E10] border border-white/10 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <input value="${t.author}" oninput="updateArrayItem('testimonials', ${idx}, 'author', this.value)" placeholder="Client Name" class="flex-1 px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs font-bold text-white" />
+                  <button onclick="removeArrayItem('testimonials', ${idx})" class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] cursor-pointer">Delete</button>
+                </div>
+                <input value="${t.role}" oninput="updateArrayItem('testimonials', ${idx}, 'role', this.value)" placeholder="Role & Company" class="w-full px-2 py-1 rounded bg-[#16161A] border border-white/10 text-[11px] text-zinc-400" />
+                <textarea rows="3" oninput="updateArrayItem('testimonials', ${idx}, 'quote', this.value)" class="w-full px-2 py-1 rounded bg-[#16161A] border border-white/10 text-xs text-zinc-200">${t.quote}</textarea>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        tabBody = `
+          <div class="space-y-3">
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Contact Heading</label>
+              <input value="${sh.contactTitle}" oninput="updateHeaderField('contactTitle', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Direct Email Address</label>
+              <input value="${p.email}" oninput="updateProfileField('email', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Inquiry Card Title</label>
+              <input value="${sh.inquiryTitle}" oninput="updateHeaderField('inquiryTitle', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Submit Button Label</label>
+              <input value="${sh.inquiryBtn}" oninput="updateHeaderField('inquiryBtn', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Footer Copyright</label>
+              <input value="${sh.footerText}" oninput="updateHeaderField('footerText', this.value)" class="w-full mt-1 px-3 py-2 rounded-lg bg-[#0E0E10] border border-white/15 text-xs text-white" />
+            </div>
+          </div>
+        `;
+      }
 
-        <section id="contact" class="py-24 px-4 sm:px-8 border-t border-white/10 bg-[#0A0A0C]">
-          <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div class="lg:col-span-7">
-              <span class="text-xs font-bold uppercase tracking-widest text-[#D2FF28] block mb-4">// 06 — INITIATE A PROJECT</span>
-              <h2 class="font-display font-extrabold text-5xl sm:text-7xl uppercase tracking-tighter leading-none mb-8">LET'S BUILD <span style="color:${p.accentColor}">NEXT-GEN</span> WORK.</h2>
-              <a href="mailto:${p.email}" style="background:${p.accentColor}" class="inline-flex items-center gap-3 px-8 py-5 rounded-2xl text-[#0E0E10] font-display font-extrabold text-lg uppercase tracking-wider shadow-xl hover:scale-105 transition-transform">
-                 ${p.email} ↗
-              </a>
+      root.innerHTML = `
+        <aside class="allow-inner-scroll fixed top-16 right-4 bottom-12 z-50 w-[350px] sm:w-[400px] rounded-3xl bg-[#16161A]/95 backdrop-blur-2xl border border-white/20 shadow-[0_25px_80px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden">
+          <div class="p-4 border-b border-white/10 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#D2FF28] block">// STUDIO CMS EDITOR</span>
+              <h4 class="font-display font-extrabold text-sm uppercase text-white">Edit All Pages & Content</h4>
             </div>
-            <div class="lg:col-span-5 p-8 rounded-3xl bg-[#16161A] border border-white/10">
-              <h3 class="font-display font-extrabold text-2xl uppercase mb-6">QUICK INQUIRY</h3>
-              <form onsubmit="event.preventDefault(); this.innerHTML='<div class=\'p-6 rounded-2xl bg-[#D2FF28]/15 border border-[#D2FF28] text-center\'><p class=\'font-display font-extrabold text-xl text-[#D2FF28] uppercase mb-2\'>Inquiry Received ✓</p><p class=\'text-xs text-zinc-300\'>Thank you! We will respond within 24 hours.</p></div>';" class="space-y-4">
-                <input required placeholder="Your Name" class="w-full px-4 py-3 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none" />
-                <input required type="email" placeholder="Your Email" class="w-full px-4 py-3 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none" />
-                <textarea required rows="3" placeholder="Project details, timeline & goals..." class="w-full px-4 py-3 rounded-xl bg-[#0E0E10] border border-white/10 text-sm text-white focus:border-[#D2FF28] focus:outline-none"></textarea>
-                <button type="submit" style="background:${p.accentColor}" class="w-full py-4 rounded-xl text-[#0E0E10] font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer hover:brightness-110 transition-all">Send Project Brief ↗</button>
-              </form>
+            <div class="flex items-center gap-1.5">
+              <button onclick="downloadStandaloneHTML()" class="px-2.5 py-1 rounded-lg bg-[#D2FF28] text-[#0E0E10] text-[10px] font-extrabold uppercase cursor-pointer">Export HTML</button>
+              <button onclick="resetAllSiteData()" class="px-2 py-1 rounded-lg bg-white/5 hover:bg-red-500/20 text-zinc-400 hover:text-red-300 text-[10px] font-bold uppercase cursor-pointer">Reset</button>
+              <button onclick="toggleCMSDrawer(false)" class="w-7 h-7 rounded-full bg-white/10 text-white text-xs font-bold cursor-pointer">✕</button>
             </div>
           </div>
-          <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 text-center text-xs text-zinc-500 uppercase tracking-widest">
-            © 2026 ${p.fullName || 'BIEN ALEXIE V. VENTURA'} — ALL RIGHTS RESERVED.
+
+          <!-- CMS Page Tabs -->
+          <div class="px-3 py-2 border-b border-white/10 flex flex-wrap gap-1 bg-[#0E0E10]/60">
+            ${tabs.map(t => `
+              <button
+                onclick="cmsTab='${t.id}';navigateTo('${t.id}');"
+                class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase cursor-pointer transition-all ${
+                  cmsTab === t.id ? 'bg-[#D2FF28] text-[#0E0E10]' : 'bg-white/5 text-zinc-400 hover:text-white'
+                }"
+              >
+                ${t.label}
+              </button>
+            `).join('')}
           </div>
-        </section>
+
+          <!-- Scrollable CMS Form Body -->
+          <div class="cms-scroll allow-inner-scroll flex-1 overflow-y-auto p-4">
+            ${tabBody}
+          </div>
+        </aside>
       `;
-
-      bindHeroParallax();
     }
+
+    // CMS State Mutators
+    window.updateProfileField = function(key, val) {
+      SITE.profile[key] = val;
+      saveSiteData();
+      renderApp();
+    };
+
+    window.updateHeaderField = function(key, val) {
+      SITE.sectionHeaders[key] = val;
+      saveSiteData();
+      renderApp();
+    };
+
+    window.updateArrayItem = function(arrKey, idx, field, val) {
+      if (SITE[arrKey] && SITE[arrKey][idx]) {
+        SITE[arrKey][idx][field] = val;
+        saveSiteData();
+        renderApp();
+      }
+    };
+
+    window.updateArrayTags = function(arrKey, idx, field, rawVal) {
+      if (SITE[arrKey] && SITE[arrKey][idx]) {
+        SITE[arrKey][idx][field] = rawVal.split(',').map(s => s.trim()).filter(Boolean);
+        saveSiteData();
+        renderApp();
+      }
+    };
+
+    window.removeArrayItem = function(arrKey, idx) {
+      SITE[arrKey].splice(idx, 1);
+      if (arrKey === 'services' && activeServiceIdx >= SITE.services.length) {
+        activeServiceIdx = Math.max(0, SITE.services.length - 1);
+      }
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.addServiceItem = function() {
+      const nextNum = String(SITE.services.length + 1).padStart(2, '0');
+      SITE.services.push({
+        id: nextNum,
+        title: "NEW CAPABILITY",
+        description: "Click to edit this capability description and tags.",
+        tags: ["Design", "Architecture"],
+        previewImg: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+      });
+      activeServiceIdx = SITE.services.length - 1;
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.addProjectItem = function() {
+      SITE.projects.push({
+        id: Date.now(),
+        title: "NEW PROJECT CASE STUDY",
+        category: "UI/UX & WebGL",
+        year: "2026",
+        client: "Client Partner",
+        metrics: "Featured Launch",
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
+        summary: "Describe the project architecture, visual direction, and impact.",
+        deliverables: ["Design System", "Frontend"]
+      });
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.addMetricItem = function() {
+      SITE.metrics.push({ num: "100%", label: "New Key Metric" });
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.addExperienceItem = function() {
+      SITE.experience.push({
+        role: "Creative Technologist",
+        company: "Studio / Brand",
+        period: "2025 — PRESENT",
+        highlight: "Key impact and shipped products"
+      });
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.addTestimonialItem = function() {
+      SITE.testimonials.push({
+        quote: "An extraordinary partner for high-impact digital experiences.",
+        author: "ALEXANDER CHEN",
+        role: "Product Lead"
+      });
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.uploadImageToField = function(inputEl, path) {
+      const file = inputEl.files && inputEl.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const parts = path.split('.');
+        SITE[parts[0]][parts[1]] = evt.target.result;
+        saveSiteData();
+        renderApp();
+        renderCMSDrawer();
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.uploadImageToArray = function(inputEl, arrKey, idx, field) {
+      const file = inputEl.files && inputEl.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        SITE[arrKey][idx][field] = evt.target.result;
+        saveSiteData();
+        renderApp();
+        renderCMSDrawer();
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.resetAllSiteData = function() {
+      localStorage.removeItem(STORAGE_KEY);
+      SITE = JSON.parse(JSON.stringify(DEFAULT_SITE));
+      saveSiteData();
+      renderApp();
+      renderCMSDrawer();
+    };
+
+    window.downloadStandaloneHTML = function() {
+      const htmlClone = document.documentElement.outerHTML.replace(
+        /const DEFAULT_SITE = [\s\S]*?;\n\s*const STORAGE_KEY/,
+        `const DEFAULT_SITE = ${JSON.stringify(SITE, null, 2)};\n    const STORAGE_KEY`
+      );
+      const blob = new Blob(['<!DOCTYPE html>\n' + htmlClone], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bien-ventura-portfolio.html';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
 
     window.selectService = function(idx) { activeServiceIdx = idx; renderApp(); };
     window.filterCategory = function(cat) { currentCategory = cat; renderApp(); };
     window.openProject = function(id) {
-      const proj = SITE.projects.find(x => x.id === id);
+      const projIdx = SITE.projects.findIndex(x => x.id === id);
+      const proj = SITE.projects[projIdx];
       if (!proj) return;
       document.getElementById('modal-root').innerHTML = `
-        <div onclick="closeModal()" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div onclick="closeModal()" class="allow-inner-scroll fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <div onclick="event.stopPropagation()" class="w-full max-w-3xl rounded-3xl bg-[#16161A] border border-white/15 overflow-hidden shadow-2xl">
             <div class="relative aspect-[16/9] bg-black">
               <img src="${proj.image}" class="w-full h-full object-cover" />
               <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/80 text-white font-bold cursor-pointer">✕</button>
             </div>
             <div class="p-6 sm:p-8">
-              <span class="text-xs font-extrabold uppercase text-[#D2FF28]">${proj.category} • ${proj.year} • ${proj.metrics}</span>
-              <h3 class="font-display font-extrabold text-2xl sm:text-4xl uppercase text-white mt-2 mb-4">${proj.title}</h3>
-              <p class="text-zinc-300 text-sm sm:text-base leading-relaxed mb-6">${proj.summary}</p>
+              <span class="text-xs font-extrabold uppercase text-[#D2FF28]">
+                <span ${editAttr(`projects.${projIdx}.category`)}>${proj.category}</span> •
+                <span ${editAttr(`projects.${projIdx}.year`)}>${proj.year}</span> •
+                <span ${editAttr(`projects.${projIdx}.metrics`)}>${proj.metrics}</span>
+              </span>
+              <h3 ${editAttr(`projects.${projIdx}.title`)} class="font-display font-extrabold text-2xl sm:text-4xl uppercase text-white mt-2 mb-4">${proj.title}</h3>
+              <p ${editAttr(`projects.${projIdx}.summary`)} class="text-zinc-300 text-sm sm:text-base leading-relaxed mb-6">${proj.summary}</p>
               <div class="flex flex-wrap gap-2">
-                ${(proj.deliverables || []).map(d => `<span class="px-3 py-1 rounded-full text-xs bg-white/5 border border-white/10 text-zinc-200">${d}</span>`).join('')}
+                ${(proj.deliverables || []).map((d, dIdx) => `<span ${editAttr(`projects.${projIdx}.deliverables.${dIdx}`)} class="px-3 py-1 rounded-full text-xs bg-white/5 border border-white/10 text-zinc-200">${d}</span>`).join('')}
               </div>
             </div>
           </div>
