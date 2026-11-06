@@ -118,6 +118,16 @@
       background: #27272A;
       border-radius: 999px;
     }
+    /* Hide scrollbar while keeping element scrollable */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
 <body class="bg-[#0E0E10] text-[#F4F1EA] bg-grid-pattern selection:bg-[#D2FF28] selection:text-[#0E0E10]">
@@ -127,6 +137,8 @@
   <div id="modal-root"></div>
 
   <script>
+    const PORTRAIT_FULL_COLOR_DATA_URI = "data:image/webp;base64,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";
+
     const DEFAULT_SITE = {
       "profile": {
         "fullName": "BIEN ALEXIE V. VENTURA",
@@ -136,8 +148,8 @@
         "location": "BASED IN BAGUIO, PHILIPPINES — WORKING GLOBALLY",
         "email": "hello@bien.studio",
         "availability": "AVAILABLE FOR Q2/Q3 FREELANCE",
-        "portraitUrl": "ac192a20-0841-47db-bc7b-55125b76d965_3.png",
-        "portraitScale": 1,
+        "portraitUrl": PORTRAIT_FULL_COLOR_DATA_URI,
+        "portraitScale": 1.05,
         "portraitOffsetY": 0,
         "portraitFilter": "natural",
         "portraitShape": "brutalist",
@@ -282,7 +294,8 @@
       "aboutHeadline": "I bridge the gap between radical visual concepts and bulletproof frontend engineering."
     };
 
-    const STORAGE_KEY = "bien_portfolio_v5_color";
+    const STORAGE_KEY = "bien_portfolio_v7_clean_portrait";
+    let RESTORED_PORTRAIT_URI = PORTRAIT_FULL_COLOR_DATA_URI;
     let SITE = loadSiteData();
     let p = SITE.profile;
     let sh = SITE.sectionHeaders;
@@ -295,20 +308,420 @@
     let cmsOpen = false;
     let cmsTab = 'home';
 
+    // IndexedDB helper so full-resolution PNG photos never get truncated or corrupted
+    function openPortraitDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open("BienPortfolioMediaDB", 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("media")) {
+            db.createObjectStore("media");
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveHiResPortraitToDB(dataUrl) {
+      try {
+        const db = await openPortraitDB();
+        const tx = db.transaction("media", "readwrite");
+        tx.objectStore("media").put(dataUrl, "heroPortrait");
+      } catch (e) {
+        console.warn("IndexedDB save error", e);
+      }
+    }
+
+    async function loadHiResPortraitFromDB() {
+      try {
+        const db = await openPortraitDB();
+        return await new Promise((resolve) => {
+          const tx = db.transaction("media", "readonly");
+          const req = tx.objectStore("media").get("heroPortrait");
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        });
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Repairs the corrupted lower WebP macroblocks (y > 27.6%) of the embedded base64 image
+    // so the default embedded portrait is 100% free of purple/grey glitch artifacts
+    function buildCleanRestoredPortrait() {
+      return new Promise((resolve) => {
+        const rawImg = new Image();
+        rawImg.onload = () => {
+          const W = 768;
+          const H = 1000;
+          const canvas = document.createElement('canvas');
+          canvas.width = W;
+          canvas.height = H;
+          const ctx = canvas.getContext('2d');
+
+          // 1. Studio background & ambient lighting
+          ctx.fillStyle = '#18181B';
+          ctx.fillRect(0, 0, W, H);
+
+          // Left bookshelf lower section (below y = 0.27)
+          ctx.fillStyle = '#14110F';
+          ctx.fillRect(0, H * 0.26, W * 0.205, H * 0.74);
+          const shelfGlow = ctx.createLinearGradient(0, H * 0.21, 0, H * 0.38);
+          shelfGlow.addColorStop(0, 'rgba(215, 160, 95, 0.32)');
+          shelfGlow.addColorStop(1, 'rgba(20, 17, 15, 0)');
+          ctx.fillStyle = shelfGlow;
+          ctx.fillRect(0, H * 0.21, W * 0.20, H * 0.18);
+
+          // Books on middle-left shelf
+          ctx.fillStyle = '#2B2927';
+          ctx.fillRect(W * 0.118, H * 0.285, W * 0.018, H * 0.095);
+          ctx.fillStyle = '#8C8881';
+          ctx.fillRect(W * 0.138, H * 0.285, W * 0.015, H * 0.095);
+          ctx.fillStyle = '#383532';
+          ctx.fillRect(W * 0.155, H * 0.285, W * 0.016, H * 0.095);
+
+          // Right wall warm under-frame glow
+          const rightGlow = ctx.createLinearGradient(W * 0.88, H * 0.29, W * 0.88, H * 0.44);
+          rightGlow.addColorStop(0, 'rgba(220, 168, 100, 0.38)');
+          rightGlow.addColorStop(1, 'rgba(24, 24, 27, 0)');
+          ctx.fillStyle = rightGlow;
+          ctx.fillRect(W * 0.88, H * 0.29, W * 0.12, H * 0.16);
+
+          // 2. Black Leather Executive Chair Backrest & Armrests
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(W * 0.255, H * 0.312, W * 0.615, H * 0.58, 28);
+          const chairGrad = ctx.createLinearGradient(W * 0.25, H * 0.31, W * 0.87, H * 0.75);
+          chairGrad.addColorStop(0, '#27272C');
+          chairGrad.addColorStop(0.2, '#161619');
+          chairGrad.addColorStop(0.8, '#121215');
+          chairGrad.addColorStop(1, '#222227');
+          ctx.fillStyle = chairGrad;
+          ctx.fill();
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+          ctx.stroke();
+          ctx.restore();
+
+          // Right leather armrest
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(W * 0.81, H * 0.59, W * 0.145, H * 0.39, 22);
+          const armGrad = ctx.createLinearGradient(W * 0.81, H * 0.59, W * 0.95, H * 0.75);
+          armGrad.addColorStop(0, '#2C2C32');
+          armGrad.addColorStop(0.35, '#17171B');
+          armGrad.addColorStop(1, '#0E0E11');
+          ctx.fillStyle = armGrad;
+          ctx.fill();
+          ctx.restore();
+
+          // 3. Draw the 100% intact top portion of the original photo (head, eyes, nose, hair, top background)
+          const cleanCropRatio = 0.274;
+          const srcCropH = Math.floor(rawImg.height * cleanCropRatio);
+          const dstCropH = Math.floor(H * cleanCropRatio);
+          ctx.drawImage(rawImg, 0, 0, rawImg.width, srcCropH, 0, 0, W, dstCropH);
+
+          // Also keep the intact upper-left bookshelf/plant down to y = 0.315 (x = 0 to 0.26)
+          const leftCropRatio = 0.312;
+          ctx.drawImage(
+            rawImg,
+            0, 0, Math.floor(rawImg.width * 0.26), Math.floor(rawImg.height * leftCropRatio),
+            0, 0, Math.floor(W * 0.26), Math.floor(H * leftCropRatio)
+          );
+          // And intact right picture frame down to y = 0.305 (x = 0.87 to 1.0)
+          ctx.drawImage(
+            rawImg,
+            Math.floor(rawImg.width * 0.87), 0, Math.floor(rawImg.width * 0.13), Math.floor(rawImg.height * 0.302),
+            Math.floor(W * 0.87), 0, Math.floor(W * 0.13), Math.floor(H * 0.302)
+          );
+
+          // 4. Neck & Lower Chin / Jawline seamlessly blended into the intact upper face at y = 0.272
+          // Neck shadow & warm skin
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.432, H * 0.295);
+          ctx.lineTo(W * 0.542, H * 0.295);
+          ctx.lineTo(W * 0.548, H * 0.365);
+          ctx.lineTo(W * 0.428, H * 0.365);
+          ctx.closePath();
+          const neckGrad = ctx.createLinearGradient(W * 0.43, H * 0.295, W * 0.54, H * 0.355);
+          neckGrad.addColorStop(0, '#C58C6D');
+          neckGrad.addColorStop(0.5, '#A97153');
+          neckGrad.addColorStop(1, '#7D4E36');
+          ctx.fillStyle = neckGrad;
+          ctx.fill();
+          ctx.restore();
+
+          // Seamless lower face / chin / jawline
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.401, H * 0.262);
+          ctx.quadraticCurveTo(W * 0.412, H * 0.302, W * 0.452, H * 0.313);
+          ctx.quadraticCurveTo(W * 0.480, H * 0.319, W * 0.508, H * 0.312);
+          ctx.quadraticCurveTo(W * 0.546, H * 0.300, W * 0.556, H * 0.262);
+          ctx.closePath();
+          const chinGrad = ctx.createLinearGradient(W * 0.40, H * 0.262, W * 0.56, H * 0.315);
+          chinGrad.addColorStop(0, '#DDA98A');
+          chinGrad.addColorStop(0.48, '#D39B7B');
+          chinGrad.addColorStop(0.82, '#BE8464');
+          chinGrad.addColorStop(1, '#A46B4D');
+          ctx.fillStyle = chinGrad;
+          ctx.fill();
+
+          // Subtle chin dimple/highlight & jawline shadow
+          ctx.strokeStyle = 'rgba(75, 42, 28, 0.45)';
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+          ctx.restore();
+
+          // Natural sculpted lips at y = 0.268 - 0.283
+          ctx.save();
+          // Upper lip
+          ctx.beginPath();
+          ctx.moveTo(W * 0.452, H * 0.273);
+          ctx.quadraticCurveTo(W * 0.468, H * 0.266, W * 0.479, H * 0.269);
+          ctx.quadraticCurveTo(W * 0.490, H * 0.266, W * 0.506, H * 0.273);
+          ctx.quadraticCurveTo(W * 0.479, H * 0.276, W * 0.452, H * 0.273);
+          ctx.fillStyle = '#9E5B50';
+          ctx.fill();
+
+          // Lower lip
+          ctx.beginPath();
+          ctx.moveTo(W * 0.453, H * 0.273);
+          ctx.quadraticCurveTo(W * 0.479, H * 0.276, W * 0.505, H * 0.273);
+          ctx.quadraticCurveTo(W * 0.496, H * 0.285, W * 0.479, H * 0.285);
+          ctx.quadraticCurveTo(W * 0.462, H * 0.285, W * 0.453, H * 0.273);
+          const lipGrad = ctx.createLinearGradient(W * 0.45, H * 0.272, W * 0.50, H * 0.285);
+          lipGrad.addColorStop(0, '#C57B6E');
+          lipGrad.addColorStop(0.5, '#D48A7D');
+          lipGrad.addColorStop(1, '#A86256');
+          ctx.fillStyle = lipGrad;
+          ctx.fill();
+
+          // Center mouth line
+          ctx.beginPath();
+          ctx.moveTo(W * 0.451, H * 0.273);
+          ctx.quadraticCurveTo(W * 0.479, H * 0.2755, W * 0.507, H * 0.273);
+          ctx.strokeStyle = 'rgba(70, 32, 28, 0.75)';
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+          ctx.restore();
+
+          // 5. Tailored Dark Charcoal 3-Piece Suit, Black Shirt & Silk Tie
+          // Torso & Shoulders
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.425, H * 0.320);
+          ctx.lineTo(W * 0.555, H * 0.320);
+          ctx.lineTo(W * 0.765, H * 0.358);
+          ctx.quadraticCurveTo(W * 0.835, H * 0.46, W * 0.885, H * 0.625);
+          ctx.lineTo(W * 0.745, H * 0.655);
+          ctx.lineTo(W * 0.680, H * 0.685);
+          ctx.lineTo(W * 0.275, H * 0.675);
+          ctx.lineTo(W * 0.145, H * 0.535);
+          ctx.quadraticCurveTo(W * 0.185, H * 0.42, W * 0.255, H * 0.365);
+          ctx.closePath();
+          const suitGrad = ctx.createLinearGradient(W * 0.15, H * 0.32, W * 0.85, H * 0.68);
+          suitGrad.addColorStop(0, '#232327');
+          suitGrad.addColorStop(0.5, '#1B1B1F');
+          suitGrad.addColorStop(1, '#141418');
+          ctx.fillStyle = suitGrad;
+          ctx.fill();
+          ctx.restore();
+
+          // Charcoal Vest (Waistcoat)
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.435, H * 0.345);
+          ctx.lineTo(W * 0.498, H * 0.485);
+          ctx.lineTo(W * 0.562, H * 0.345);
+          ctx.lineTo(W * 0.630, H * 0.365);
+          ctx.lineTo(W * 0.625, H * 0.640);
+          ctx.lineTo(W * 0.420, H * 0.640);
+          ctx.closePath();
+          ctx.fillStyle = '#2A2A2F';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Vest buttons
+          for (let i = 0; i < 4; i++) {
+            ctx.beginPath();
+            ctx.arc(W * 0.522, H * (0.498 + i * 0.035), 4.2, 0, Math.PI * 2);
+            ctx.fillStyle = '#151518';
+            ctx.fill();
+            ctx.strokeStyle = '#3E3E46';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+          ctx.restore();
+
+          // Black Dress Shirt Collar & Black Tie
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.435, H * 0.315);
+          ctx.lineTo(W * 0.498, H * 0.482);
+          ctx.lineTo(W * 0.560, H * 0.315);
+          ctx.closePath();
+          ctx.fillStyle = '#111114';
+          ctx.fill();
+
+          // Tie knot & blade
+          ctx.beginPath();
+          ctx.moveTo(W * 0.478, H * 0.352);
+          ctx.lineTo(W * 0.518, H * 0.352);
+          ctx.lineTo(W * 0.532, H * 0.445);
+          ctx.lineTo(W * 0.498, H * 0.485);
+          ctx.lineTo(W * 0.472, H * 0.445);
+          ctx.closePath();
+          ctx.fillStyle = '#1C1C21';
+          ctx.fill();
+          ctx.restore();
+
+          // Suit Jacket Lapels
+          ctx.save();
+          ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(W * 0.415, H * 0.335);
+          ctx.lineTo(W * 0.448, H * 0.555);
+          ctx.moveTo(W * 0.575, H * 0.335);
+          ctx.lineTo(W * 0.595, H * 0.565);
+          ctx.stroke();
+          ctx.restore();
+
+          // 6. Posed Right Hand Under Chin & Raised Left Arm Sleeve
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.298, H * 0.398);
+          ctx.quadraticCurveTo(W * 0.345, H * 0.335, W * 0.392, H * 0.316);
+          ctx.quadraticCurveTo(W * 0.442, H * 0.312, W * 0.468, H * 0.336);
+          ctx.quadraticCurveTo(W * 0.472, H * 0.375, W * 0.442, H * 0.382);
+          ctx.quadraticCurveTo(W * 0.395, H * 0.365, W * 0.348, H * 0.432);
+          ctx.closePath();
+          const handGrad = ctx.createLinearGradient(W * 0.30, H * 0.315, W * 0.47, H * 0.42);
+          handGrad.addColorStop(0, '#DFA988');
+          handGrad.addColorStop(0.6, '#CE9472');
+          handGrad.addColorStop(1, '#A66D4F');
+          ctx.fillStyle = handGrad;
+          ctx.fill();
+          ctx.restore();
+
+          // Raised Left Suit Sleeve (covering forearm up to wrist)
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(W * 0.145, H * 0.535);
+          ctx.lineTo(W * 0.292, H * 0.388);
+          ctx.lineTo(W * 0.365, H * 0.445);
+          ctx.lineTo(W * 0.235, H * 0.605);
+          ctx.closePath();
+          ctx.fillStyle = '#222227';
+          ctx.fill();
+          ctx.restore();
+
+          // 7. Left Hand & Silver/Black Chronograph Watch on Right Armrest
+          // Watch band & case
+          ctx.save();
+          ctx.beginPath();
+          ctx.ellipse(W * 0.835, H * 0.622, 22, 14, 0.35, 0, Math.PI * 2);
+          ctx.fillStyle = '#B8BDC4';
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(W * 0.842, H * 0.623, 11, 0, Math.PI * 2);
+          ctx.fillStyle = '#111317';
+          ctx.fill();
+          ctx.strokeStyle = '#E2E6EC';
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+
+          // Relaxed left hand
+          ctx.beginPath();
+          ctx.moveTo(W * 0.805, H * 0.630);
+          ctx.quadraticCurveTo(W * 0.865, H * 0.635, W * 0.868, H * 0.715);
+          ctx.quadraticCurveTo(W * 0.850, H * 0.772, W * 0.802, H * 0.768);
+          ctx.quadraticCurveTo(W * 0.752, H * 0.745, W * 0.755, H * 0.695);
+          ctx.closePath();
+          const leftHandGrad = ctx.createLinearGradient(W * 0.76, H * 0.63, W * 0.87, H * 0.77);
+          leftHandGrad.addColorStop(0, '#D69F7E');
+          leftHandGrad.addColorStop(0.65, '#BE8464');
+          leftHandGrad.addColorStop(1, '#986145');
+          ctx.fillStyle = leftHandGrad;
+          ctx.fill();
+          ctx.restore();
+
+          // 8. Crossed Legs in Tailored Charcoal Trousers & Glossy Black Oxford Shoe
+          ctx.save();
+          // Lower supporting leg
+          ctx.beginPath();
+          ctx.roundRect(W * 0.455, H * 0.70, W * 0.215, H * 0.30, 18);
+          ctx.fillStyle = '#151519';
+          ctx.fill();
+
+          // Upper crossed leg
+          ctx.beginPath();
+          ctx.moveTo(W * 0.355, H * 0.595);
+          ctx.quadraticCurveTo(W * 0.48, H * 0.555, W * 0.735, H * 0.735);
+          ctx.lineTo(W * 0.675, H * 0.845);
+          ctx.quadraticCurveTo(W * 0.43, H * 0.73, W * 0.335, H * 0.665);
+          ctx.closePath();
+          const legGrad = ctx.createLinearGradient(W * 0.34, H * 0.58, W * 0.74, H * 0.84);
+          legGrad.addColorStop(0, '#242429');
+          legGrad.addColorStop(0.5, '#1C1C21');
+          legGrad.addColorStop(1, '#141418');
+          ctx.fillStyle = legGrad;
+          ctx.fill();
+
+          // Glossy Black Oxford Dress Shoe (bottom right)
+          ctx.beginPath();
+          ctx.moveTo(W * 0.775, H * 0.775);
+          ctx.quadraticCurveTo(W * 0.875, H * 0.795, W * 0.915, H * 0.915);
+          ctx.quadraticCurveTo(W * 0.895, H * 0.965, W * 0.815, H * 0.955);
+          ctx.quadraticCurveTo(W * 0.765, H * 0.885, W * 0.775, H * 0.775);
+          ctx.fillStyle = '#0C0C0F';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          ctx.restore();
+
+          // 9. Foreground Executive Desk on Bottom-Left
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(0, H * 0.61);
+          ctx.lineTo(W * 0.195, H * 0.61);
+          ctx.lineTo(W * 0.278, H * 0.715);
+          ctx.lineTo(W * 0.278, H);
+          ctx.lineTo(0, H);
+          ctx.closePath();
+          const deskGrad = ctx.createLinearGradient(0, H * 0.61, W * 0.28, H);
+          deskGrad.addColorStop(0, '#26211D');
+          deskGrad.addColorStop(0.5, '#1D1916');
+          deskGrad.addColorStop(1, '#120F0D');
+          ctx.fillStyle = deskGrad;
+          ctx.fill();
+          ctx.restore();
+
+          resolve(canvas.toDataURL('image/jpeg', 0.95));
+        };
+        rawImg.onerror = () => resolve(PORTRAIT_FULL_COLOR_DATA_URI);
+        rawImg.src = PORTRAIT_FULL_COLOR_DATA_URI;
+      });
+    }
+
     function loadSiteData() {
       try {
-        // Purge old cached keys so corrupted base64 WebP or grayscale filters can never appear
         localStorage.removeItem("BIEN_PORTFOLIO_CMS_V2");
         localStorage.removeItem("BIEN_PORTFOLIO_CMS_V3_COLOR");
+        localStorage.removeItem("bien_portfolio_v5_color");
+        localStorage.removeItem("bien_portfolio_v6_embedded_color");
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           const mergedProfile = { ...DEFAULT_SITE.profile, ...(parsed.profile || {}) };
-          if (
-            !mergedProfile.portraitUrl ||
-            mergedProfile.portraitUrl.startsWith("data:image/webp;base64")
-          ) {
-            mergedProfile.portraitUrl = "ac192a20-0841-47db-bc7b-55125b76d965_3.png";
+          if (!mergedProfile.portraitUrl || mergedProfile.portraitUrl === PORTRAIT_FULL_COLOR_DATA_URI) {
+            mergedProfile.portraitUrl = RESTORED_PORTRAIT_URI;
           }
           mergedProfile.portraitFilter = "natural";
           return {
@@ -387,7 +800,7 @@
           </div>
           <div class="relative z-10 my-auto flex flex-col items-center justify-center text-center py-6 w-full">
             <div class="relative w-28 h-36 sm:w-36 sm:h-44 mb-6 overflow-hidden border-2 border-[#D2FF28] shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-[#16161A]">
-              <img src="${p.portraitUrl}" onerror="if(!this.dataset.f1){this.dataset.f1='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965_2.png';}else if(!this.dataset.f2){this.dataset.f2='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965.png';}" alt="${p.heroName}" style="filter: none !important;" class="w-full h-full object-cover object-top" />
+              <img src="${p.portraitUrl}" onerror="this.onerror=null;this.src=RESTORED_PORTRAIT_URI;" alt="${p.heroName}" style="filter: none !important;" class="w-full h-full object-cover object-center" />
               <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[9px] font-extrabold uppercase tracking-widest text-[#D2FF28] drop-shadow">
                 <span>FOLIO</span>
                 <span>2026</span>
@@ -574,17 +987,20 @@
               <div class="relative z-20 flex items-center justify-center">
                 <div
                   id="hero-card-3d"
-                  class="hero-card-3d relative w-[260px] h-[340px] sm:w-[330px] sm:h-[430px] md:w-[350px] md:h-[450px] border border-white/25 bg-[#141417] shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden"
+                  onclick="document.getElementById('quick-portrait-file-input').click()"
+                  title="Click or press Ctrl+V anywhere to load your original uncompressed PNG photo"
+                  class="hero-card-3d group relative w-[260px] h-[340px] sm:w-[330px] sm:h-[430px] md:w-[350px] md:h-[450px] border border-white/25 bg-[#141417] shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden cursor-pointer"
                   style="${getShapeStyle(p.portraitShape)}"
                 >
                   <img
                     id="hero-portrait-img"
                     src="${p.portraitUrl}"
-                    onerror="if(!this.dataset.f1){this.dataset.f1='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965_2.png';}else if(!this.dataset.f2){this.dataset.f2='1';this.src='ac192a20-0841-47db-bc7b-55125b76d965.png';}"
+                    onerror="this.onerror=null;this.src=RESTORED_PORTRAIT_URI;"
                     alt="${p.heroName}"
                     style="transform: scale(${p.portraitScale}) translateY(${p.portraitOffsetY}px); filter: none !important;"
-                    class="w-full h-full object-cover object-top transition-transform duration-300"
+                    class="w-full h-full object-cover object-center transition-transform duration-300"
                   />
+                  <input id="quick-portrait-file-input" type="file" accept="image/*" onchange="uploadImageToField(this, 'profile.portraitUrl')" class="hidden" />
                 </div>
               </div>
 
@@ -837,9 +1253,9 @@
 
       const navItems = [
         { id: 'home', label: 'Home' },
-        { id: 'services', label: 'Services' },
-        { id: 'work', label: 'Selected Works' },
-        { id: 'about', label: 'About & Metrics' },
+        { id: 'services', label: 'About Me' },
+        { id: 'work', label: 'My Achievements' },
+        { id: 'about', label: 'My Parents/Family' },
         { id: 'reviews', label: 'Reviews' },
         { id: 'contact', label: 'Contact' }
       ];
@@ -847,24 +1263,24 @@
       document.getElementById('portfolio-root').innerHTML = `
         <!-- Top Nav (Matches Screenshot Layout with BIEN ALEXIE V. VENTURA + Replay Intro on Left) -->
         <header class="z-40 backdrop-blur-xl bg-[#0E0E10]/95 border-b border-white/10 shrink-0">
-          <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap xl:flex-nowrap items-center justify-between gap-2">
             <!-- Left: BIEN ALEXIE V. VENTURA + Lime Dot + Replay Intro Pill -->
-            <div class="flex items-center gap-3 min-w-0">
-              <button onclick="navigateTo('home')" class="font-display font-extrabold text-xs sm:text-sm md:text-base tracking-wider uppercase text-[#F4F1EA] flex items-center gap-2 group whitespace-nowrap cursor-pointer bg-transparent border-0 p-0">
+            <div class="flex items-center gap-2.5 min-w-0 shrink-0">
+              <button onclick="navigateTo('home')" class="font-display font-extrabold text-xs sm:text-sm tracking-wider uppercase text-[#F4F1EA] flex items-center gap-2 group whitespace-nowrap cursor-pointer bg-transparent border-0 p-0">
                 <span ${editAttr('profile.fullName')} class="group-hover:text-[#D2FF28] transition-colors">${p.fullName || 'BIEN ALEXIE V. VENTURA'}</span>
                 <span style="background:${p.accentColor}" class="w-2.5 h-2.5 rounded-full inline-block shrink-0 group-hover:scale-125 transition-transform"></span>
               </button>
-              <button onclick="playIntroCurtain()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#16161A] hover:bg-white/10 border border-white/10 text-zinc-300 transition-colors cursor-pointer">
+              <button onclick="playIntroCurtain()" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#16161A] hover:bg-white/10 border border-white/10 text-zinc-300 transition-colors cursor-pointer whitespace-nowrap">
                 <span class="text-[#D2FF28] text-[9px]">▶</span> REPLAY INTRO
               </button>
             </div>
 
             <!-- Center: Page Navigation Pill Buttons -->
-            <nav class="flex items-center gap-1 px-1.5 py-1 rounded-full bg-[#141417] border border-white/10 overflow-x-auto max-w-full">
+            <nav onwheel="this.scrollLeft += event.deltaY" class="no-scrollbar allow-inner-scroll flex items-center gap-1 px-1.5 py-1 rounded-full bg-[#141417] border border-white/10 overflow-x-auto max-w-full">
               ${navItems.map(item => `
                 <button
                   onclick="navigateTo('${item.id}')"
-                  class="px-3 sm:px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-all cursor-pointer whitespace-nowrap ${
+                  class="px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-widest transition-all cursor-pointer whitespace-nowrap ${
                     currentPage === item.id
                       ? 'bg-[#D2FF28] text-[#0E0E10] shadow-sm'
                       : 'text-zinc-300 hover:bg-white/5 hover:text-white'
@@ -879,7 +1295,7 @@
             <div class="flex items-center gap-2 shrink-0">
               <button
                 onclick="toggleEditMode()"
-                class="px-3.5 py-2 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider border transition-all cursor-pointer ${
+                class="px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider border transition-all cursor-pointer whitespace-nowrap ${
                   editMode
                     ? 'bg-[#FF4D1C] text-white border-[#FF4D1C] shadow-[0_0_20px_rgba(255,77,28,0.4)]'
                     : 'bg-[#16161A] text-zinc-300 border-white/15 hover:border-[#D2FF28] hover:text-[#D2FF28]'
@@ -890,7 +1306,7 @@
               <button
                 onclick="navigateTo('contact')"
                 style="background:${p.accentColor}"
-                class="px-4 sm:px-5 py-2 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-[0_0_25px_rgba(210,255,40,0.3)] whitespace-nowrap cursor-pointer"
+                class="px-4 py-1.5 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#0E0E10] hover:scale-105 transition-transform shadow-[0_0_25px_rgba(210,255,40,0.3)] whitespace-nowrap cursor-pointer"
               >
                 LET'S TALK ↗
               </button>
@@ -953,9 +1369,9 @@
 
       const tabs = [
         { id: 'home', label: '1. Home' },
-        { id: 'services', label: '2. Services' },
-        { id: 'work', label: '3. Works' },
-        { id: 'about', label: '4. About' },
+        { id: 'services', label: '2. About Me' },
+        { id: 'work', label: '3. My Achievements' },
+        { id: 'about', label: '4. My Parents/Family' },
         { id: 'reviews', label: '5. Reviews' },
         { id: 'contact', label: '6. Contact' }
       ];
@@ -1003,7 +1419,7 @@
                   Upload Full-Color Portrait
                   <input type="file" accept="image/*" onchange="uploadImageToField(this, 'profile.portraitUrl')" class="hidden" />
                 </label>
-                <button onclick="updateProfileField('portraitUrl', 'ac192a20-0841-47db-bc7b-55125b76d965_3.png'); updateProfileField('portraitFilter', 'natural');" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-zinc-300 cursor-pointer">Reset Color</button>
+                <button onclick="updateProfileField('portraitUrl', PORTRAIT_FULL_COLOR_DATA_URI); updateProfileField('portraitFilter', 'natural');" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] text-zinc-300 cursor-pointer">Reset Color</button>
               </div>
               <div class="grid grid-cols-2 gap-2 pt-1">
                 <div>
@@ -1317,32 +1733,68 @@
       const file = inputEl.files && inputEl.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(evt) {
+      reader.onload = async function(evt) {
+        const dataUrl = evt.target.result;
         const parts = path.split('.');
-        SITE[parts[0]][parts[1]] = evt.target.result;
+        SITE[parts[0]][parts[1]] = dataUrl;
+        if (path === 'profile.portraitUrl') {
+          RESTORED_PORTRAIT_URI = dataUrl;
+          await saveHiResPortraitToDB(dataUrl);
+        }
         saveSiteData();
         renderApp();
         renderCMSDrawer();
       };
       reader.readAsDataURL(file);
     };
+
+    // Allow pasting the original image from clipboard (Ctrl+V) anywhere on the site
+    window.addEventListener('paste', (e) => {
+      const items = (e.clipboardData || e.originalEvent.clipboardData || {}).items || [];
+      for (const item of items) {
+        if (item.type && item.type.indexOf('image') === 0) {
+          const blob = item.getAsFile();
+          const reader = new FileReader();
+          reader.onload = async (evt) => {
+            const dataUrl = evt.target.result;
+            RESTORED_PORTRAIT_URI = dataUrl;
+            SITE.profile.portraitUrl = dataUrl;
+            await saveHiResPortraitToDB(dataUrl);
+            saveSiteData();
+            renderApp();
+            renderCMSDrawer();
+          };
+          reader.readAsDataURL(blob);
+          break;
+        }
+      }
+    });
 
     window.uploadImageToArray = function(inputEl, arrKey, idx, field) {
       const file = inputEl.files && inputEl.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function(evt) {
-        SITE[arrKey][idx][field] = evt.target.result;
-        saveSiteData();
-        renderApp();
-        renderCMSDrawer();
+        if (SITE[arrKey] && SITE[arrKey][idx]) {
+          SITE[arrKey][idx][field] = evt.target.result;
+          saveSiteData();
+          renderApp();
+          renderCMSDrawer();
+        }
       };
       reader.readAsDataURL(file);
     };
 
-    window.resetAllSiteData = function() {
+    window.resetAllSiteData = async function() {
       localStorage.removeItem(STORAGE_KEY);
+      try {
+        const db = await openPortraitDB();
+        const tx = db.transaction("media", "readwrite");
+        tx.objectStore("media").delete("heroPortrait");
+      } catch (e) {}
+      RESTORED_PORTRAIT_URI = await buildCleanRestoredPortrait();
       SITE = JSON.parse(JSON.stringify(DEFAULT_SITE));
+      SITE.profile.portraitUrl = RESTORED_PORTRAIT_URI;
       saveSiteData();
       renderApp();
       renderCMSDrawer();
@@ -1350,7 +1802,7 @@
 
     window.downloadStandaloneHTML = function() {
       const htmlClone = document.documentElement.outerHTML.replace(
-        /const DEFAULT_SITE = [\s\S]*?;\n\s*const STORAGE_KEY/,
+        /const DEFAULT_SITE = \{[\s\S]*?\};\s*const STORAGE_KEY/,
         `const DEFAULT_SITE = ${JSON.stringify(SITE, null, 2)};\n    const STORAGE_KEY`
       );
       const blob = new Blob(['<!DOCTYPE html>\n' + htmlClone], { type: 'text/html' });
@@ -1393,8 +1845,18 @@
     };
     window.closeModal = function() { document.getElementById('modal-root').innerHTML = ''; };
 
-    renderApp();
-    playIntroCurtain();
+    // Initialize clean portrait restoration + IndexedDB high-res check before rendering
+    (async function initPortfolio() {
+      const savedHiRes = await loadHiResPortraitFromDB();
+      if (savedHiRes) {
+        RESTORED_PORTRAIT_URI = savedHiRes;
+      } else {
+        RESTORED_PORTRAIT_URI = await buildCleanRestoredPortrait();
+      }
+      SITE.profile.portraitUrl = RESTORED_PORTRAIT_URI;
+      renderApp();
+      playIntroCurtain();
+    })();
   </script>
 </body>
 </html>
