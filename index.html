@@ -154,6 +154,7 @@
           { "label": "Age", "value": "18 years old" },
           { "label": "Birthdate", "value": "May 31, 2008" },
           { "label": "Civil Status", "value": "Single" },
+          { "label": "Number of Siblings", "value": "3" },
           { "label": "Height", "value": "5'7\"" },
           { "label": "Weight", "value": "60 kg" },
           { "label": "Nationality", "value": "Filipino" },
@@ -233,10 +234,10 @@
         { "period": "2026 — Current", "level": "College", "school": "University of the Cordilleras", "detail": "BSIT — Web Track Development", "logo": "logo-uc", "honors": ["Current"] }
       ],
       "familyBoxes": [
-        { "label": "My Mother", "photo": "mother", "quote": "Where everything started.", "note": "The first love I ever knew, and my strength in every season of life." },
-        { "label": "My Father", "photo": "father", "quote": "Where everything started.", "note": "The example that shaped me, and my strength every step of the way." },
-        { "label": "Siblings", "photo": "siblings", "quote": "My first friends, my forever team.", "note": "Siblings who laugh, tease and cheer for me no matter what." },
-        { "label": "Friends", "photo": "friends", "quote": "The ones who make the journey lighter.", "note": "Friends who laugh, grow and celebrate every win right beside me." }
+        { "label": "My Mother", "photo": "mother", "quote": "Where everything started.", "note": "The first love I ever knew, and my strength in every season of life.", "message": "Thank you for every sacrifice, every prayer and every sleepless night. You taught me to keep going even when things get hard, and everything I achieve starts with your love. I'm proud to be your son." },
+        { "label": "My Father", "photo": "father", "quote": "Where everything started.", "note": "The example that shaped me, and my strength every step of the way.", "message": "Thank you for showing me what strength, patience and hard work look like. Your example taught me to stand tall, stay humble and never give up on my dreams. I hope to make you proud every day." },
+        { "label": "Siblings", "photo": "siblings", "quote": "My first friends, my forever team.", "note": "Siblings who laugh, tease and cheer for me no matter what.", "message": "Thank you for the laughter, the teasing and the late-night talks. No matter how much we argue, you are my home and my biggest cheerers. I'm lucky to grow up beside you." },
+        { "label": "Friends", "photo": "friends", "quote": "The ones who make the journey lighter.", "note": "Friends who laugh, grow and celebrate every win right beside me.", "message": "Thank you for the laughs, the memories and the support when I needed it most. You made school and every struggle lighter, and I'm grateful to have walked this journey with you." }
       ],
       "projects": [
         {
@@ -969,12 +970,13 @@
       const b = SITE.familyBoxes[i];
       document.getElementById('modal-root').innerHTML = `
         <div onclick="closeModal()" class="allow-inner-scroll fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div onclick="event.stopPropagation()" class="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto no-scrollbar rounded-3xl bg-[#141414] border border-white/15 shadow-2xl">
+          <div onclick="event.stopPropagation()" class="relative w-full max-w-[min(48rem,76vh)] max-h-[92vh] overflow-y-auto no-scrollbar rounded-3xl bg-[#141414] border border-white/15 shadow-2xl">
             <button onclick="closeModal()" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-black/80 text-white font-bold cursor-pointer z-10">✕</button>
-            <img src="${b.photo}" alt="${b.label}" class="w-full max-h-[75vh] object-contain bg-black" />
+            <img src="${b.photo}" alt="${b.label}" class="w-full aspect-[4/3] object-cover" />
             <div class="p-4 sm:p-5">
               <h3 class="font-serif-editorial italic text-2xl sm:text-3xl text-[#D4AF37]">${b.label}</h3>
               <p class="font-serif-editorial italic text-lg text-white mt-1">“${b.quote}”</p>
+              <p class="text-zinc-300 text-sm sm:text-base leading-relaxed mt-3 border-t border-white/10 pt-3">${b.message}</p>
             </div>
           </div>
         </div>
