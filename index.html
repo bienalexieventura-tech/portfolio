@@ -97,11 +97,22 @@
     .fx-rise { animation: fxRise .6s cubic-bezier(.22,1,.36,1) backwards; animation-delay: calc(var(--i, 0) * 80ms); }
     @keyframes fxShine { 0%, 55% { transform: translateX(-130%); } 100% { transform: translateX(130%); } }
     @keyframes fxRise { from { opacity: 0; transform: translateY(18px); } }
+    :root { --leaf: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F0D98A' d='M17 8C8 10 5.9 16.2 3.8 19.8 5.4 21 7 22 9.2 22 19 22 22 12 22 2c-1.800 1.800-3.400 3.400-5 6z'/%3E%3C/svg%3E"); }
+    .fx-sit { width: 28px; height: 28px; z-index: 4; pointer-events: none; background: var(--leaf) center/contain no-repeat; transform-origin: 20% 90%;
+      filter: drop-shadow(0 0 5px rgba(212,175,55,.9)); animation: fxSway 3.2s ease-in-out infinite alternate; animation-delay: var(--d, 0s); }
+    @keyframes fxSway { from { transform: rotate(-14deg); } to { transform: rotate(12deg); } }
+    .fx-leaf { position: absolute; top: -16px; width: 14px; height: 14px; z-index: 4; pointer-events: none; opacity: 0;
+      background: var(--leaf) center/contain no-repeat;
+      filter: drop-shadow(0 0 4px rgba(212,175,55,.9)); animation: fxLeaf 9s linear infinite; animation-delay: var(--ld, 0s); }
+    @keyframes fxLeaf { 0% { transform: translate(0,0) rotate(0); opacity: 0; } 8% { opacity: 1; } 25% { transform: translate(16px,85px) rotate(80deg); } 50% { transform: translate(-10px,170px) rotate(170deg); }
+      75% { transform: translate(14px,255px) rotate(260deg); opacity: 1; } 100% { transform: translate(-6px,340px) rotate(350deg); opacity: 0; } }
+    .fx-bar { background: linear-gradient(180deg, transparent 30%, #F0D98A 50%, transparent 70%) 0 0/100% 300%, rgba(212,175,55,.3); animation: fxBar 3.5s linear infinite; }
+    @keyframes fxBar { to { background-position: 0 100%, 0 0; } }
     @keyframes fxSpin { to { --a: 360deg; } }
     @keyframes fxPulse { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,.45); } 70%, 100% { box-shadow: 0 0 0 9px rgba(212,175,55,0); } }
     @keyframes fxZoom { to { transform: scale(1.08); } }
     @keyframes fxFade { 0% { opacity: 0; } 5% { opacity: 1; } 25% { opacity: 1; } 30%, 100% { opacity: 0; } }
-    @media (prefers-reduced-motion: reduce) { .fx-card::after, .fx-ping, .fx-zoom, .fx-fade, .fx-shine::before, .fx-rise { animation: none; } .fx-fade:first-of-type { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .fx-card::after, .fx-ping, .fx-zoom, .fx-fade, .fx-shine::before, .fx-rise, .fx-leaf, .fx-bar, .fx-sit { animation: none; } .fx-fade:first-of-type { opacity: 1; } }
   </style>
 </head>
 <body class="bg-[#0A0A0A] text-[#F5F2EA] bg-grid-pattern selection:bg-[#D4AF37] selection:text-[#0A0A0A]">
@@ -281,9 +292,9 @@
         { "period": "2026 — Current", "level": "College", "school": "University of the Cordilleras", "detail": "BSIT — Web Track Development", "logo": "logo-uc", "honors": ["Current"] }
       ],
       "familyBoxes": [
-        { "label": "My Mother", "photo": "mother", "icon": "♥︎", "fit": true, "quote": "Where everything started.", "note": "The first love I ever knew, and my strength in every season of life.", "message": "Thank you for every sacrifice, every prayer and every sleepless night. You taught me to keep going even when things get hard, and everything I achieve starts with your love. I'm proud to be your son." },
-        { "label": "My Father", "photo": "father", "icon": "☀︎", "fit": true, "quote": "Where everything started.", "note": "The example that shaped me, and my strength every step of the way.", "message": "Thank you for showing me what strength, patience and hard work look like. Your example taught me to stand tall, stay humble and never give up on my dreams. I hope to make you proud every day." },
-        { "label": "Siblings", "photo": "siblings", "icon": "✌︎", "fit": true, "quote": "My first friends, my forever team.", "note": "Siblings who laugh, tease and cheer for me no matter what.", "message": "Thank you for the laughter, the teasing and the late-night talks. No matter how much we argue, you are my home and my biggest cheerers. I'm lucky to grow up beside you." },
+        { "label": "My Mother", "photo": "mother", "icon": "♥︎", "quote": "Where everything started.", "note": "The first love I ever knew, and my strength in every season of life.", "message": "Thank you for every sacrifice, every prayer and every sleepless night. You taught me to keep going even when things get hard, and everything I achieve starts with your love. I'm proud to be your son." },
+        { "label": "My Father", "photo": "father", "icon": "☀︎", "quote": "The strength behind every step I take.", "note": "The example that shaped me, and my strength every step of the way.", "message": "Thank you for showing me what strength, patience and hard work look like. Your example taught me to stand tall, stay humble and never give up on my dreams. I hope to make you proud every day." },
+        { "label": "Siblings", "photo": "siblings", "icon": "✌︎", "quote": "My first friends, my forever team.", "note": "Siblings who laugh, tease and cheer for me no matter what.", "message": "Thank you for the laughter, the teasing and the late-night talks. No matter how much we argue, you are my home and my biggest cheerers. I'm lucky to grow up beside you." },
         { "label": "Friends", "photo": "friends", "icon": "✦︎", "extra": ["friends-2", "friends-3", "friends-4"], "quote": "The ones who make the journey lighter.", "note": "Friends who laugh, grow and celebrate every win right beside me.", "message": "Thank you for the laughs, the memories and the support when I needed it most. You made school and every struggle lighter, and I'm grateful to have walked this journey with you." }
       ],
       "projects": [
@@ -836,22 +847,34 @@
             <p class="font-serif-editorial italic text-base xl:text-lg leading-snug text-white border-l-2 border-[#D4AF37] pl-3 max-w-md">“${sh.familyQuote}”</p>
           </div>
           <div class="flex-1 min-h-0 flex items-center justify-center">
-            <div class="w-full grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" style="max-width:min(100%, calc((100vh - 250px) * 3.2 + 3rem))">
+            <div class="w-full grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" style="max-width:min(100%, calc((100vh - 340px) * 3.5 + 3rem))">
               ${SITE.familyBoxes.map((b, i) => { const n = b.photos.length; return `
+                <div class="row-span-2 grid min-w-0 [grid-template-rows:subgrid]">
                 <button onclick="openPhoto(${i})" aria-label="View ${b.label} photo${n > 1 ? 's' : ''}" style="--d:${(-i * 1.5).toFixed(1)}s"
-                  class="fx-card group aspect-[4/5] min-h-0 overflow-hidden rounded-2xl border border-[#D4AF37]/25 bg-[#141414] text-left cursor-pointer">
-                  ${b.fit
-                    ? `<img src="${b.photo}" alt="" class="absolute inset-0 w-full h-full object-cover scale-125 blur-xl opacity-60" /><img src="${b.photo}" alt="${b.label}" draggable="false" class="absolute inset-x-0 top-12 w-full object-contain" style="height:calc(100% - 9.3rem)" />`
-                    : b.photos.map((src, k) => `<img src="${src}" alt="${b.label}" draggable="false" style="--fd:${k * 3.5}s,0s" class="absolute inset-0 w-full h-full object-cover object-[center_35%] ${n > 1 ? 'fx-fade' : 'fx-zoom'}" />`).join('')}
-                  <div class="absolute bg-gradient-to-t to-transparent ${b.fit ? 'inset-x-0 bottom-0 h-28 from-black/90' : 'inset-0 from-black/90 via-black/20'}"></div>
-                  <span class="fx-ping absolute top-3 left-3 w-9 h-9 rounded-full bg-black/60 border border-[#D4AF37]/60 flex items-center justify-center text-xl leading-none text-[#F0D98A] [text-shadow:0_0_10px_rgba(212,175,55,.8)]">${b.icon}</span>
-                  ${n > 1 ? `<span class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/60 border border-[#D4AF37]/50 text-[10px] font-bold uppercase tracking-wider text-[#F0D98A]">${n} photos</span>` : ''}
-                  <div class="absolute inset-x-0 bottom-0 p-4">
-                    <div class="h-px w-8 bg-[#D4AF37] mb-2 transition-all duration-500 group-hover:w-24"></div>
-                    <h3 class="font-serif-editorial italic text-3xl leading-none text-white">${b.label}</h3>
-                    <p class="text-[13px] text-zinc-200 leading-snug mt-1">${b.quote}</p>
+                  class="fx-card group h-full flex flex-col gap-2 overflow-hidden rounded-2xl border border-[#D4AF37]/25 bg-[#141414] p-2 text-left cursor-pointer">
+                  <i class="fx-leaf" style="left:16%;--ld:${-i * 2}s"></i><i class="fx-leaf" style="left:74%;width:10px;height:10px;--ld:${-i * 2 - 4.5}s"></i>
+                  <div class="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-black">
+                    ${b.photos.map((src, k) => `<img src="${src}" alt="${b.label}" draggable="false" style="--fd:${k * 3.5}s,0s" class="absolute inset-0 w-full h-full object-cover object-[center_35%] ${n > 1 ? 'fx-fade' : 'fx-zoom'}" />`).join('')}
+                    <span class="fx-ping absolute top-2 left-2 w-9 h-9 rounded-full bg-black/60 border border-[#D4AF37]/60 flex items-center justify-center text-xl leading-none text-[#F0D98A] [text-shadow:0_0_10px_rgba(212,175,55,.8)]">${b.icon}</span>
+                    ${n > 1 ? `<span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/60 border border-[#D4AF37]/50 text-[10px] font-bold uppercase tracking-wider text-[#F0D98A]">${n} photos</span>` : ''}
                   </div>
-                </button>`; }).join('')}
+                  <div class="relative flex-1 rounded-xl border border-[#D4AF37]/30 bg-gradient-to-br from-[#241E0C] to-[#0E0E0E] px-3.5 py-3">
+                    <span class="absolute -top-px -left-px w-3.5 h-3.5 rounded-tl-xl border-t-2 border-l-2 border-[#D4AF37]"></span>
+                    <span class="absolute -bottom-px -right-px w-3.5 h-3.5 rounded-br-xl border-b-2 border-r-2 border-[#D4AF37]"></span>
+                    <h3 class="font-serif-editorial italic text-3xl leading-none text-[#F0D98A]">${b.label}</h3>
+                    <div class="h-px w-8 bg-[#D4AF37] my-2 transition-all duration-500 group-hover:w-full"></div>
+                    <p class="text-sm leading-snug text-zinc-300">“${b.quote}”</p>
+                  </div>
+                </button>
+                <div style="--i:${i + 2}" class="fx-rise relative rounded-2xl border border-dashed border-[#D4AF37]/35 bg-[#101010] pt-4 pb-3 pl-5 pr-3.5">
+                  <i class="fx-sit absolute -top-3.5 left-4" style="--d:${-i}s"></i>
+                  <span class="fx-bar absolute left-0 inset-y-0 w-1 rounded-l-2xl"></span>
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-[#D4AF37]">A note from the heart</span>
+                  </div>
+                  <p class="text-[13px] leading-relaxed text-zinc-200">${b.message}</p>
+                </div>
+                </div>`; }).join('')}
             </div>
           </div>
         </section>
